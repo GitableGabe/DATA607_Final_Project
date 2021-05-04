@@ -124,16 +124,10 @@ head(df_tbl10 <- as.data.frame(html_table(read_html(url_10))[[2]]),5)
 head(df_tbl34 <- as.data.frame(html_table(read_html(url_34))[[2]]),5)
 ```
 
+
+<details><summary>not sure if we're using this</summary>
 ```{r}
 #table34 <- import(url_34_xsls)
-```
-
-<details><summary>Click here</summary>
-Some text
-
-```{r code}
-# even code
-print("Hello world!")
 ```
 </details>
 
