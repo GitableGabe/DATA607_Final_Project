@@ -115,7 +115,7 @@ tbl34 <- as.data.frame(html_table(read_html(url_34))[[2]])
 ```
 
 ```{r}
-(table34 <- import(url_34_xsls))
+#table34 <- import(url_34_xsls)
 ```
 
 https://www.bls.gov/cps/cpsaat34.htm
