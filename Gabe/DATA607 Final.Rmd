@@ -103,13 +103,13 @@ necessary simplifying assumptions so that you can deliver your work on time!
 
 ## Data Preparation {.tabset .tabset-pills}
 
+### Load Data
+
 In order to conduct our studies we used data from [U.S. Bureau of Labor Statistics](https://www.bls.gov/cps/tables.htm#empstat) specifically data regarding:
 
 * [Table 9 : *Employed persons by occupation, sex, and age*](https://www.bls.gov/cps/cpsaat09.htm)
 * [Table 10: *Employed persons by occupation, race, Hispanic or Latino ethnicity, and sex*](https://www.bls.gov/cps/cpsaat10.htm)
 * [Table 34: *Unemployed jobseekers by sex, reason for unemployment, and active jobsearch methods used*](https://www.bls.gov/cps/cpsaat34.htm)
-
-### Load Data
 
 ```{r class.source = "fold-hide"}
 url_9  <- "https://www.bls.gov/web/empsit/cpseea09.htm"
