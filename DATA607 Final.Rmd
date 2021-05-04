@@ -48,7 +48,7 @@ library(rvest)
 
 ### Load Data
 
-```{r}
+```{r class.source = "fold-hide"}
 url_9  <- "https://www.bls.gov/web/empsit/cpseea09.htm"
 url_10 <- "https://www.bls.gov/web/empsit/cpseea10.htm"
 url_34 <- "https://www.bls.gov/cps/cpsaat34.htm"
