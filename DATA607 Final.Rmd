@@ -98,7 +98,9 @@ necessary simplifying assumptions so that you can deliver your work on time!
 
 ## Data Preparation {.tabset .tabset-pills}
 
-[data souce](https://www.bls.gov/cps/tables.htm#empstat)
+In order to conduct our studies we used 
+
+[data source](https://www.bls.gov/cps/tables.htm#empstat)
 
 ### Load Data
 
@@ -110,18 +112,23 @@ url_34_xsls <- "https://www.bls.gov/cps/cpsaat34.xlsx"
 ```
 
 ```{r}
-tbl9  <- as.data.frame(html_table(read_html(url_9))[[2]])
-tbl10 <- as.data.frame(html_table(read_html(url_10))[[2]])
-tbl34 <- as.data.frame(html_table(read_html(url_34))[[2]])
+df_tbl9  <- as.data.frame(html_table(read_html(url_9))[[2]])
+df_tbl10 <- as.data.frame(html_table(read_html(url_10))[[2]])
+df_tbl34 <- as.data.frame(html_table(read_html(url_34))[[2]])
 ```
 
 ```{r}
 #table34 <- import(url_34_xsls)
 ```
 
-https://www.bls.gov/cps/cpsaat34.htm
 
-### Sub Label 2
+
+### Transform Data
+
+```{r}
+
+```
+
 
 
 ## Evaluation
