@@ -1772,6 +1772,7 @@ Code and data. Have you delivered your code and conclusions using a “reproduci
 Deadline management. Were your draft project proposal, project, and presentation delivered on time? Any part of the project that is turned in late will receive a maximum grade of 80%. Please turn in your work on time! You are of course welcome to deliver ahead of schedule!</li>
 </ul>
 </div>
+<!-- Code used to collapse output when needed.  -------->
 </div>
 <div id="data-preparation" class="section level2 tabset tabset-pills">
 <h2>Data Preparation</h2>
@@ -1800,13 +1801,55 @@ Deadline management. Were your draft project proposal, project, and presentation
 ## 3 11,049 10,728 10,736 10,130 9,972 9,710
 ## 4    836    825    946    865   825   771
 ## 5    299    314    302    337   325   278</code></pre>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>df_tbl10 &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">html_table</span>(<span class="kw">read_html</span>(url_<span class="dv">10</span>))[[<span class="dv">2</span>]])</span>
-<span id="cb4-2"><a href="#cb4-2"></a>df_tbl34 &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">html_table</span>(<span class="kw">read_html</span>(url_<span class="dv">34</span>))[[<span class="dv">2</span>]])</span></code></pre></div>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="co">#table34 &lt;- import(url_34_xsls)</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw">head</span>(df_tbl10 &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">html_table</span>(<span class="kw">read_html</span>(url_<span class="dv">10</span>))[[<span class="dv">2</span>]]),<span class="dv">5</span>)</span></code></pre></div>
+<pre><code>##   Age, sex, and marital status 2020 2020 2020 2020 2020 2020  2020 2020 2020
+## 1 Age, sex, and marital status Mar. Apr.  May June July Aug. Sept. Oct. Nov.
+## 2                  AGE AND SEX                                              
+## 3     Total, 16 years and over  4.4 14.8 13.3 11.1 10.2  8.4   7.8  6.9  6.7
+## 4               16 to 19 years 14.1 32.1 29.6 22.6 19.1 16.4  16.3 14.0 13.9
+## 5               16 to 17 years 16.3 28.0 29.0 23.2 17.7 14.8  17.2 14.1 14.9
+##   2020 2021 2021 2021
+## 1 Dec. Jan. Feb. Mar.
+## 2                    
+## 3  6.7  6.3  6.2  6.0
+## 4 16.0 14.8 13.9 13.0
+## 5 14.5 15.9 14.8 12.6</code></pre>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="kw">head</span>(df_tbl34 &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">html_table</span>(<span class="kw">read_html</span>(url_<span class="dv">34</span>))[[<span class="dv">2</span>]]),<span class="dv">5</span>)</span></code></pre></div>
+<pre><code>##                                           Sex and reason       2020        2020
+## 1                                         Sex and reason Unemployed  Unemployed
+## 2                                         Sex and reason      Total Job-seekers
+## 3                                       Total unemployed     12,947       6,577
+## 4 Job losers and persons who completed temporary jobs(1)      9,770       3,399
+## 5                                            Job leavers        683         683
+##                                 2020                                    2020
+## 1 Percent of jobseekers using method      Percent of jobseekers using method
+## 2          Contactedemployerdirectly Sent outresumesor filledoutapplications
+## 3                               49.1                                    56.0
+## 4                               49.6                                    56.8
+## 5                               51.5                                    58.7
+##                                 2020                               2020
+## 1 Percent of jobseekers using method Percent of jobseekers using method
+## 2                Placedoransweredads        Contactedfriendsorrelatives
+## 3                               14.2                               24.5
+## 4                               16.0                               27.8
+## 5                               14.3                               22.2
+##                                 2020                               2020
+## 1 Percent of jobseekers using method Percent of jobseekers using method
+## 2            Publicemploy-mentagency           Privateemploy-mentagency
+## 3                               14.3                                8.3
+## 4                               17.0                               10.2
+## 5                               12.2                                7.1
+##                                 2020                        2020
+## 1 Percent of jobseekers using method Averagenumber ofmethodsused
+## 2                              Other Averagenumber ofmethodsused
+## 3                               15.2                         1.8
+## 4                               15.8                         1.9
+## 5                               14.1                         1.8</code></pre>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="co">#table34 &lt;- import(url_34_xsls)</span></span></code></pre></div>
 <details>
 <p><summary>Click here</summary> Some text</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="co"># even code</span></span>
-<span id="cb6-2"><a href="#cb6-2"></a><span class="kw">print</span>(<span class="st">&quot;Hello world!&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="co"># even code</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="kw">print</span>(<span class="st">&quot;Hello world!&quot;</span>)</span></code></pre></div>
 <pre><code>## [1] &quot;Hello world!&quot;</code></pre>
 </details>
 </div>

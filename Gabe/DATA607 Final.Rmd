@@ -96,6 +96,11 @@ necessary simplifying assumptions so that you can deliver your work on time!
 - [ ] Deadline management. Were your draft project proposal, project, and presentation delivered on time? Any part of the project that is turned in late will receive a maximum grade of 80%. Please turn in your work on time! You are of course welcome to deliver ahead of schedule!
 </div>
 
+
+<!-- Code used to collapse output when needed.  -------->
+
+
+
 ## Data Preparation {.tabset .tabset-pills}
 
 In order to conduct our studies we used data from [U.S. Bureau of Labor Statistics](https://www.bls.gov/cps/tables.htm#empstat) specifically data regarding:
@@ -115,8 +120,8 @@ url_34_xsls <- "https://www.bls.gov/cps/cpsaat34.xlsx"
 
 ```{r}
 head(df_tbl9  <- as.data.frame(html_table(read_html(url_9))[[2]]),5)
-df_tbl10 <- as.data.frame(html_table(read_html(url_10))[[2]])
-df_tbl34 <- as.data.frame(html_table(read_html(url_34))[[2]])
+head(df_tbl10 <- as.data.frame(html_table(read_html(url_10))[[2]]),5)
+head(df_tbl34 <- as.data.frame(html_table(read_html(url_34))[[2]]),5)
 ```
 
 ```{r}
