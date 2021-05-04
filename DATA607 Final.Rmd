@@ -97,6 +97,7 @@ necessary simplifying assumptions so that you can deliver your work on time!
 </div>
 
 ## Data Preparation {.tabset .tabset-pills}
+<<<<<<< HEAD
 
 In order to conduct our studies we used data from [U.S. Bureau of Labor Statistics](https://www.bls.gov/cps/tables.htm#empstat) specifically data regarding:
 
@@ -104,7 +105,11 @@ In order to conduct our studies we used data from [U.S. Bureau of Labor Statisti
 * [Table 10: *Employed persons by occupation, race, Hispanic or Latino ethnicity, and sex*](https://www.bls.gov/cps/cpsaat10.htm)
 * [Table 34: *Unemployed jobseekers by sex, reason for unemployment, and active jobsearch methods used*](https://www.bls.gov/cps/cpsaat34.htm)
 
+=======
+>>>>>>> c67b6143dc7c2bcc647124e74ff128a4c333a16a
 ### Load Data
+
+In order to conduct our studies we used the [data tables](https://www.bls.gov/cps/tables.htm#empstat) from U.S. Bureau of Labor Statistics.
 
 ```{r class.source = "fold-hide"}
 url_9  <- "https://www.bls.gov/web/empsit/cpseea09.htm"
