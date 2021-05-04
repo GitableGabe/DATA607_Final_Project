@@ -1,0 +1,85 @@
+---
+title: "DATA607 Final"
+author: "Gabriella Martinez, Maliat Hossain, Gabriel Campos"
+date: "`r format(Sys.Date(), '%B %d %Y')`"
+output:
+  html_document:
+    code_folding: "show"
+    includes:
+      in_header: header.html
+    css: ./lab.css
+    highlight: pygments
+    theme: readable
+    toc: true
+    toc_float: true
+  prettydoc::html_pretty:
+    theme: cayman
+  pdf_document: default
+editor_options: 
+  chunk_output_type: console
+---
+
+
+<!--match.arg(theme, themes()) : 
+    'arg' should be one of "default", "cerulean", "journal","flatly",
+    "darkly", "readable", "spacelab", "united", "cosmo", "lumen", "paper", 
+    "sandstone", "simplex", "yeti"  -------->
+
+```{r, echo=FALSE,warning=FALSE, results='hide', include=FALSE}
+# install.packages("rio")
+# ^^^^ only if needed 
+library(httr)
+library(readxl)
+library(rio)
+library(rvest)
+```
+
+<!-- (https://rdrr.io/cran/reactable/man/reactable.html) -->
+
+# Assignment{.tabset}
+
+## Requirements
+
+
+
+## Data Preparation {.tabset .tabset-pills}
+
+[data souce](https://www.bls.gov/cps/tables.htm#empstat)
+
+### Load Data
+
+```{r}
+url_9  <- "https://www.bls.gov/web/empsit/cpseea09.htm"
+url_10 <- "https://www.bls.gov/web/empsit/cpseea10.htm"
+url_34 <- "https://www.bls.gov/cps/cpsaat34.htm"
+url_34_xsls <- "https://www.bls.gov/cps/cpsaat34.xlsx"
+```
+
+```{r}
+tbl9  <- as.data.frame(html_table(read_html(url_9))[[2]])
+tbl10 <- as.data.frame(html_table(read_html(url_10))[[2]])
+tbl10 <- as.data.frame(html_table(read_html(url_34))[[2]])
+```
+
+```{r}
+(table34 <- import(url_34_xsls))
+```
+
+https://www.bls.gov/cps/cpsaat34.htm
+
+### Sub Label 2
+
+
+## Evaluation
+
+
+## Visualizations
+
+
+## Conclusion
+
+
+
+<!------- Below is for removing excessive space in Rmarkdown | HTML formatting -------->
+
+<div class="tocify-extend-page" data-unique="tocify-extend-page" style="height: 0;"></div>
