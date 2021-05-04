@@ -97,12 +97,9 @@ necessary simplifying assumptions so that you can deliver your work on time!
 </div>
 
 ## Data Preparation {.tabset .tabset-pills}
-
-In order to conduct our studies we used 
-
-[data source](https://www.bls.gov/cps/tables.htm#empstat)
-
 ### Load Data
+
+In order to conduct our studies we used the [data tables](https://www.bls.gov/cps/tables.htm#empstat) from U.S. Bureau of Labor Statistics.
 
 ```{r class.source = "fold-hide"}
 url_9  <- "https://www.bls.gov/web/empsit/cpseea09.htm"
