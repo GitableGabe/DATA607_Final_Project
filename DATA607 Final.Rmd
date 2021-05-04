@@ -40,7 +40,35 @@ library(rvest)
 
 ## Requirements
 
+<center>
+$MSDA\ 607\ Final\ Project$
+<center>
 
+*Deliverable*              | *Date*                                               | *Points*
+:-------------             | :------                                              | :------
+One Paragraph Proposal     | Sunday April 26                                      | 20  
+Final Project              | Sunday May 10                                        | 120  
+Final Project Presentation | Before or during Final Meetup on Wednesday May 13    | 30  
+
+**Policy on Collaboration**
+
+You may work in a team of up to three people. Each project team member is responsible for understanding and being able to explain all of the submitted project code. Remember that you can take work that you find elsewhere as a base to build on, but you need to acknowledge the source, so that I base your grade on what you contributed, not on what you started with!
+
+**Approval Meeting**
+Once you’ve turned in your one paragraph proposal, I want to schedule a 15 minute phone meeting with each person or team
+(starting when we return from Thanksgiving break), where you’ll describe the reason (benefit) for doing this work and/or
+question you’re seeking to answer, where you’ll source the data, and the overall flow. For team projects, I also want you to
+articulate the roles and responsibilities of each team member.
+
+**Final Project Checklist**
+To receive full credit, you’ll need to deliver on all of the items in the checklist below. Please read carefully through this checklist
+before you make your project proposal. You are (within these checklist constraints) strongly urged to limit scope and make the
+necessary simplifying assumptions so that you can deliver your work on time!
+
+|:----|
+|[ ]|
+[x]| 
+[x]| 
 
 ## Data Preparation {.tabset .tabset-pills}
 
