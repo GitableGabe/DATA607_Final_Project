@@ -149,6 +149,14 @@ df_tb9_tdy<-
     as.data.frame(df_tb9[1,]%>%
       assign_in(list(1,1),"Month")%>%
         bind_rows(
+          df_tb9[3,],
+          (df_tb9[4:14,]%>%
+                      select(1)%>%
+                        lapply(function(x){
+                          gsub("^", "Total, ", x)
+                        }
+                            )%>%
+                              cbind(df_tb9[17:27,2:14])),
           df_tb9[16,],
           (df_tb9[17:27,]%>%
                       select(1)%>%
