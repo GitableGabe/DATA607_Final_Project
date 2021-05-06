@@ -127,18 +127,118 @@ head(df_tbl34 <- as.data.frame(html_table(read_html(url_34))[[2]]),5)
 ```
 
 
+
+
 ### Transform Data
 
-```{r}
-test <- 
-  df_tbl10[1,]%>%
-    rbind(df_tbl10[16:27,])%>%
-    rbind(df_tbl10[29:40,])
+```{r class.source = "fold-hide", results='hide'}
+colnames(df_tb10) <- c("Label", "4/2020", "5/2020",
+                         "6/2020", "7/2020", "8/2020",
+                         "9/2020", "10/2020", "11/2020",
+                         "12/2020", "1/2021","2/2021",
+                         "3/2021", "4/2021")
+
+colnames(df_tb9) <- c("Label", "4/2020", "5/2020",
+                       "6/2020", "7/2020", "8/2020",
+                       "9/2020", "10/2020", "11/2020",
+                       "12/2020", "1/2021","2/2021",
+                       "3/2021", "4/2021")
 ```
 
 ```{r}
-row.names(df_tbl10)
+df_tb9_tdy<-
+    as.data.frame(df_tb9[1,]%>%
+      assign_in(list(1,1),"Month")%>%
+        bind_rows(
+          df_tb9[16,],
+          (df_tb9[17:27,]%>%
+                      select(1)%>%
+                        lapply(function(x){
+                          gsub("^", "Men, ", x)
+                        }
+                            )%>%
+                              cbind(df_tb9[17:27,2:14])),
+          df_tb9[29,],
+          (df_tb9[30:40,]%>%
+                      select(1)%>%
+                        lapply(function(x){
+                          gsub("^", "Women, ", x)
+                        }
+                            )%>%
+                              cbind(df_tb9[30:40,2:14]))
+                  )
+    )
+# Adding male and female category
+df_tb9_tdy$Gender <- ifelse(grepl("Men,", df_tb9_tdy$Label), "Male",
+                            ifelse(grepl("Women,", df_tb9_tdy$Label), "Female", ""))
 ```
+
+
+
+And repeated for `Table 10`
+
+```{r class.source = "fold-hide"}
+df_tb10_tdy<-
+    as.data.frame(df_tb10[1,]%>%
+      assign_in(list(1,1),"Month")%>%
+        bind_rows(
+          df_tb10[16,],
+          (df_tb10[17:27,]%>%
+                      select(1)%>%
+                        lapply(function(x){
+                          gsub("^", "Men, ", x)
+                        }
+                            )%>%
+                              cbind(df_tb10[17:27,2:14])),
+          df_tb10[29,],
+          (df_tb10[30:40,]%>%
+                      select(1)%>%
+                        lapply(function(x){
+                          gsub("^", "Women, ", x)
+                        }
+                            )%>%
+                              cbind(df_tb10[30:40,2:14]))
+                  )
+    )
+# Adding male and female category
+df_tb10_tdy$Gender <- ifelse(grepl("Men,", df_tb10_tdy$Label), "Male",
+                            ifelse(grepl("Women,", df_tb10_tdy$Label), "Female", ""))
+```
+
+Transposed for `df_tdy_tb9` and repeated for `df_tdy_tb10`.
+
+```{r class.source = "fold-show"}
+df_tb9_tdy_t <-
+  df_tb9_tdy%>%
+    rownames_to_column() %>%
+      pivot_longer(-rowname, 'variable', 'value') %>%
+        pivot_wider(variable, rowname)%>%
+          janitor::row_to_names(1)
+```
+
+```{r class.source = "fold-hide"}
+df_tb10_tdy_t <-
+  df_tb10_tdy%>%
+    rownames_to_column() %>%
+      pivot_longer(-rowname, 'variable', 'value') %>%
+        pivot_wider(variable, rowname)%>%
+          janitor::row_to_names(1)
+```
+
+Sorted by categories 
+
+```{r}
+df_tb9_tdy_ts <- 
+  df_tb9_tdy_t %>%
+  select(1,2,3,15,4,16,5,17,6,18,7,19,8,20,9,21,10,22,11,23,12,24,13,25,14,26)
+```
+
+```{r}
+df_tb10_tdy_ts <- 
+  df_tb10_tdy_t %>%
+  select(1,2,3,15,4,16,5,17,6,18,7,19,8,20,9,21,10,22,11,23,12,24,13,25,14,26)
+```
+  
 #### Table 34
 ```{r}
 table341<-anti_join(table34,table34[1:2,])
