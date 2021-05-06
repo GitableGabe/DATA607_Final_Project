@@ -163,6 +163,16 @@ names(table341)[11] <- "Average number of method used"
 
 ```
 
+```{r}
+table341<-anti_join(table341,table341[1,])
+```
+
+```{r}
+Men_Job_Search<-table341[1:5,]
+Women_Job_Search<-table341[6:10,]
+```
+
+
 ## Evaluation
 
 
