@@ -32,6 +32,7 @@ library(httr)
 library(readxl)
 library(rio)
 library(rvest)
+library(tidyverse)
 ```
 
 <!-- (https://rdrr.io/cran/reactable/man/reactable.html) -->
@@ -96,20 +97,21 @@ necessary simplifying assumptions so that you can deliver your work on time!
 - [ ] Deadline management. Were your draft project proposal, project, and presentation delivered on time? Any part of the project that is turned in late will receive a maximum grade of 80%. Please turn in your work on time! You are of course welcome to deliver ahead of schedule!
 </div>
 
+
+<!-- Code used to collapse output when needed.  -------->
+
+## Scope
+
+![](Article.png)
 ## Data Preparation {.tabset .tabset-pills}
-<<<<<<< HEAD
+
+### Load Data
 
 In order to conduct our studies we used data from [U.S. Bureau of Labor Statistics](https://www.bls.gov/cps/tables.htm#empstat) specifically data regarding:
 
 * [Table 9 : *Employed persons by occupation, sex, and age*](https://www.bls.gov/cps/cpsaat09.htm)
 * [Table 10: *Employed persons by occupation, race, Hispanic or Latino ethnicity, and sex*](https://www.bls.gov/cps/cpsaat10.htm)
 * [Table 34: *Unemployed jobseekers by sex, reason for unemployment, and active jobsearch methods used*](https://www.bls.gov/cps/cpsaat34.htm)
-
-=======
->>>>>>> c67b6143dc7c2bcc647124e74ff128a4c333a16a
-### Load Data
-
-In order to conduct our studies we used the [data tables](https://www.bls.gov/cps/tables.htm#empstat) from U.S. Bureau of Labor Statistics.
 
 ```{r class.source = "fold-hide"}
 url_9  <- "https://www.bls.gov/web/empsit/cpseea09.htm"
@@ -120,29 +122,55 @@ url_34_xsls <- "https://www.bls.gov/cps/cpsaat34.xlsx"
 
 ```{r}
 head(df_tbl9  <- as.data.frame(html_table(read_html(url_9))[[2]]),5)
-df_tbl10 <- as.data.frame(html_table(read_html(url_10))[[2]])
-df_tbl34 <- as.data.frame(html_table(read_html(url_34))[[2]])
+head(df_tbl10 <- as.data.frame(html_table(read_html(url_10))[[2]]),5)
+head(df_tbl34 <- as.data.frame(html_table(read_html(url_34))[[2]]),5)
 ```
 
-```{r}
-#table34 <- import(url_34_xsls)
-```
-
-<details><summary>Click here</summary>
-Some text
-
-```{r code}
-# even code
-print("Hello world!")
-```
-</details>
 
 ### Transform Data
 
 ```{r}
+test <- 
+  df_tbl10[1,]%>%
+    rbind(df_tbl10[16:27,])%>%
+    rbind(df_tbl10[29:40,])
+```
+
+```{r}
+row.names(df_tbl10)
+```
+#### Table 34
+```{r}
+table341<-anti_join(table34,table34[1:2,])
+table341<-anti_join(table341,table341[2:8,])
 
 ```
 
+```{r}
+names(table341)[2] <- "Total"
+names(table341)[3] <- "Job Sekkers"
+names(table341)[4] <- "Contacted Employer Directly"
+names(table341)[5] <- "Sent out resumes or filled out applications"
+names(table341)[6] <- "Placed or answered ads"
+names(table341)[7] <- "Contacted Friends or Relatives"
+names(table341)[8] <- "Public Employment Agency"
+names(table341)[9] <- "Private Employment Agency"
+names(table341)[10] <- "Other"
+names(table341)[11] <- "Average number of method used"
+
+
+
+
+```
+
+```{r}
+table341<-anti_join(table341,table341[1,])
+```
+
+```{r}
+Men_Job_Search<-table341[1:5,]
+Women_Job_Search<-table341[6:10,]
+```
 
 
 ## Evaluation
@@ -153,7 +181,7 @@ print("Hello world!")
 
 ## Conclusion
 
-
+<details><summary>Click here</summary>
 
 <!------- Below is for removing excessive space in Rmarkdown | HTML formatting -------->
 
