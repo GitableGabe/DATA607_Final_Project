@@ -1736,13 +1736,13 @@ div.tocify {
 </style>
 <div class="nobullet">
 <ul>
-<li><input type="checkbox" disabled></input>
+<li><input type="checkbox" disabled checked></input>
 Proposal describes your motivation for performing this analysis</li>
-<li><input type="checkbox" disabled></input>
+<li><input type="checkbox" disabled checked></input>
 Proposal describes likely data sources.</li>
 <li><input type="checkbox" disabled></input>
 Your project has a recognizable “data science workflow,” such as the OSEMN workflow or Hadley Wickham’s Grammar of Data Science. [Example: First the data is acquired, then necessary transformations and clean-up are performed, then the analysis and presentation work is performed]</li>
-<li><input type="checkbox" disabled></input>
+<li><input type="checkbox" disabled checked></input>
 Project includes data from at least two different types of data sources (e.g., two or more of these: relational or CSV,Neo4J, web page [scraped or API], MongoDB, etc.)</li>
 <li><input type="checkbox" disabled></input>
 Project includes at least one data transformation operation. [Examples: transforming from wide to long; converting columns to date format]</li>
@@ -1852,62 +1852,75 @@ Deadline management. Were your draft project proposal, project, and presentation
 </div>
 <div id="transform-data" class="section level3">
 <h3>Transform Data</h3>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>(<span class="kw">colnames</span>(df_tbl10) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Date&quot;</span>, <span class="st">&quot;4/2020&quot;</span>, <span class="st">&quot;5/2020&quot;</span>, <span class="st">&quot;6/2020&quot;</span>, <span class="st">&quot;7/2020&quot;</span>, <span class="st">&quot;8/2020&quot;</span>,</span>
-<span id="cb8-2"><a href="#cb8-2"></a>           <span class="st">&quot;9/2020&quot;</span>, <span class="st">&quot;10/2020&quot;</span>, <span class="st">&quot;11/2020&quot;</span>, <span class="st">&quot;12/2020&quot;</span>, <span class="st">&quot;1/2021&quot;</span>,<span class="st">&quot;2/2021&quot;</span>,<span class="st">&quot;3/2021&quot;</span>, <span class="st">&quot;4/2021&quot;</span>))</span></code></pre></div>
-<pre><code>##  [1] &quot;Date&quot;    &quot;4/2020&quot;  &quot;5/2020&quot;  &quot;6/2020&quot;  &quot;7/2020&quot;  &quot;8/2020&quot;  &quot;9/2020&quot; 
-##  [8] &quot;10/2020&quot; &quot;11/2020&quot; &quot;12/2020&quot; &quot;1/2021&quot;  &quot;2/2021&quot;  &quot;3/2021&quot;  &quot;4/2021&quot;</code></pre>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="kw">colnames</span>(df_tbl9) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Date&quot;</span>, <span class="st">&quot;4/2020&quot;</span>, <span class="st">&quot;5/2020&quot;</span>, <span class="st">&quot;6/2020&quot;</span>, <span class="st">&quot;7/2020&quot;</span>, <span class="st">&quot;8/2020&quot;</span>,</span>
-<span id="cb10-2"><a href="#cb10-2"></a>           <span class="st">&quot;9/2020&quot;</span>, <span class="st">&quot;10/2020&quot;</span>, <span class="st">&quot;11/2020&quot;</span>, <span class="st">&quot;12/2020&quot;</span>, <span class="st">&quot;1/2021&quot;</span>,<span class="st">&quot;2/2021&quot;</span>,<span class="st">&quot;3/2021&quot;</span>, <span class="st">&quot;4/2021&quot;</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>df_tidy_tbl10&lt;-</span>
-<span id="cb11-2"><a href="#cb11-2"></a><span class="st">    </span><span class="kw">as.data.frame</span>(df_tbl10[<span class="dv">1</span>,]<span class="op">%&gt;%</span></span>
-<span id="cb11-3"><a href="#cb11-3"></a><span class="st">      </span><span class="kw">assign_in</span>(<span class="kw">list</span>(<span class="dv">1</span>,<span class="dv">1</span>),<span class="st">&quot;Month&quot;</span>)<span class="op">%&gt;%</span></span>
-<span id="cb11-4"><a href="#cb11-4"></a><span class="st">        </span><span class="kw">bind_rows</span>(</span>
-<span id="cb11-5"><a href="#cb11-5"></a>          df_tbl10[<span class="dv">16</span>,],</span>
-<span id="cb11-6"><a href="#cb11-6"></a>          (df_tbl10[<span class="dv">17</span><span class="op">:</span><span class="dv">27</span>,]<span class="op">%&gt;%</span></span>
-<span id="cb11-7"><a href="#cb11-7"></a><span class="st">                      </span><span class="kw">select</span>(<span class="dv">1</span>)<span class="op">%&gt;%</span></span>
-<span id="cb11-8"><a href="#cb11-8"></a><span class="st">                        </span><span class="kw">lapply</span>(<span class="cf">function</span>(x){</span>
-<span id="cb11-9"><a href="#cb11-9"></a>                          <span class="kw">gsub</span>(<span class="st">&quot;^&quot;</span>, <span class="st">&quot;Men, &quot;</span>, x)</span>
-<span id="cb11-10"><a href="#cb11-10"></a>                        }</span>
-<span id="cb11-11"><a href="#cb11-11"></a>                            )<span class="op">%&gt;%</span></span>
-<span id="cb11-12"><a href="#cb11-12"></a><span class="st">                              </span><span class="kw">cbind</span>(df_tbl10[<span class="dv">17</span><span class="op">:</span><span class="dv">27</span>,<span class="dv">2</span><span class="op">:</span><span class="dv">14</span>])),</span>
-<span id="cb11-13"><a href="#cb11-13"></a>          df_tbl10[<span class="dv">29</span>,],</span>
-<span id="cb11-14"><a href="#cb11-14"></a>          (df_tbl10[<span class="dv">30</span><span class="op">:</span><span class="dv">40</span>,]<span class="op">%&gt;%</span></span>
-<span id="cb11-15"><a href="#cb11-15"></a><span class="st">                      </span><span class="kw">select</span>(<span class="dv">1</span>)<span class="op">%&gt;%</span></span>
-<span id="cb11-16"><a href="#cb11-16"></a><span class="st">                        </span><span class="kw">lapply</span>(<span class="cf">function</span>(x){</span>
-<span id="cb11-17"><a href="#cb11-17"></a>                          <span class="kw">gsub</span>(<span class="st">&quot;^&quot;</span>, <span class="st">&quot;Women, &quot;</span>, x)</span>
-<span id="cb11-18"><a href="#cb11-18"></a>                        }</span>
-<span id="cb11-19"><a href="#cb11-19"></a>                            )<span class="op">%&gt;%</span></span>
-<span id="cb11-20"><a href="#cb11-20"></a><span class="st">                              </span><span class="kw">cbind</span>(df_tbl10[<span class="dv">30</span><span class="op">:</span><span class="dv">40</span>,<span class="dv">2</span><span class="op">:</span><span class="dv">14</span>]))</span>
-<span id="cb11-21"><a href="#cb11-21"></a>                  )</span>
-<span id="cb11-22"><a href="#cb11-22"></a>    )<span class="op">%&gt;%</span></span>
-<span id="cb11-23"><a href="#cb11-23"></a><span class="st">        </span><span class="kw">rownames_to_column</span>() <span class="op">%&gt;%</span></span>
-<span id="cb11-24"><a href="#cb11-24"></a><span class="st">          </span><span class="kw">pivot_longer</span>(<span class="op">-</span>rowname, <span class="st">&#39;variable&#39;</span>, <span class="st">&#39;value&#39;</span>) <span class="op">%&gt;%</span></span>
-<span id="cb11-25"><a href="#cb11-25"></a><span class="st">            </span><span class="kw">pivot_wider</span>(variable, rowname)</span></code></pre></div>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>df_tidy_tbl9&lt;-</span>
-<span id="cb12-2"><a href="#cb12-2"></a><span class="st">    </span><span class="kw">as.data.frame</span>(df_tbl9[<span class="dv">1</span>,]<span class="op">%&gt;%</span></span>
-<span id="cb12-3"><a href="#cb12-3"></a><span class="st">      </span><span class="kw">assign_in</span>(<span class="kw">list</span>(<span class="dv">1</span>,<span class="dv">1</span>),<span class="st">&quot;Month&quot;</span>)<span class="op">%&gt;%</span></span>
-<span id="cb12-4"><a href="#cb12-4"></a><span class="st">        </span><span class="kw">bind_rows</span>(</span>
-<span id="cb12-5"><a href="#cb12-5"></a>          df_tbl10[<span class="dv">16</span>,],</span>
-<span id="cb12-6"><a href="#cb12-6"></a>          (df_tbl10[<span class="dv">17</span><span class="op">:</span><span class="dv">27</span>,]<span class="op">%&gt;%</span></span>
-<span id="cb12-7"><a href="#cb12-7"></a><span class="st">                      </span><span class="kw">select</span>(<span class="dv">1</span>)<span class="op">%&gt;%</span></span>
-<span id="cb12-8"><a href="#cb12-8"></a><span class="st">                        </span><span class="kw">lapply</span>(<span class="cf">function</span>(x){</span>
-<span id="cb12-9"><a href="#cb12-9"></a>                          <span class="kw">gsub</span>(<span class="st">&quot;^&quot;</span>, <span class="st">&quot;Men, &quot;</span>, x)</span>
-<span id="cb12-10"><a href="#cb12-10"></a>                        }</span>
-<span id="cb12-11"><a href="#cb12-11"></a>                            )<span class="op">%&gt;%</span></span>
-<span id="cb12-12"><a href="#cb12-12"></a><span class="st">                              </span><span class="kw">cbind</span>(df_tbl9[<span class="dv">17</span><span class="op">:</span><span class="dv">27</span>,<span class="dv">2</span><span class="op">:</span><span class="dv">14</span>])),</span>
-<span id="cb12-13"><a href="#cb12-13"></a>          df_tbl10[<span class="dv">29</span>,],</span>
-<span id="cb12-14"><a href="#cb12-14"></a>          (df_tbl10[<span class="dv">30</span><span class="op">:</span><span class="dv">40</span>,]<span class="op">%&gt;%</span></span>
-<span id="cb12-15"><a href="#cb12-15"></a><span class="st">                      </span><span class="kw">select</span>(<span class="dv">1</span>)<span class="op">%&gt;%</span></span>
-<span id="cb12-16"><a href="#cb12-16"></a><span class="st">                        </span><span class="kw">lapply</span>(<span class="cf">function</span>(x){</span>
-<span id="cb12-17"><a href="#cb12-17"></a>                          <span class="kw">gsub</span>(<span class="st">&quot;^&quot;</span>, <span class="st">&quot;Women, &quot;</span>, x)</span>
-<span id="cb12-18"><a href="#cb12-18"></a>                        }</span>
-<span id="cb12-19"><a href="#cb12-19"></a>                            )<span class="op">%&gt;%</span></span>
-<span id="cb12-20"><a href="#cb12-20"></a><span class="st">                              </span><span class="kw">cbind</span>(df_tbl9[<span class="dv">30</span><span class="op">:</span><span class="dv">40</span>,<span class="dv">2</span><span class="op">:</span><span class="dv">14</span>]))</span>
-<span id="cb12-21"><a href="#cb12-21"></a>                  )</span>
-<span id="cb12-22"><a href="#cb12-22"></a>    )<span class="op">%&gt;%</span></span>
-<span id="cb12-23"><a href="#cb12-23"></a><span class="st">        </span><span class="kw">rownames_to_column</span>() <span class="op">%&gt;%</span></span>
-<span id="cb12-24"><a href="#cb12-24"></a><span class="st">          </span><span class="kw">pivot_longer</span>(<span class="op">-</span>rowname, <span class="st">&#39;variable&#39;</span>, <span class="st">&#39;value&#39;</span>) <span class="op">%&gt;%</span></span>
-<span id="cb12-25"><a href="#cb12-25"></a><span class="st">            </span><span class="kw">pivot_wider</span>(variable, rowname)   </span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r fold-hide"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>(<span class="kw">colnames</span>(df_tbl10) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Date&quot;</span>, <span class="st">&quot;4/2020&quot;</span>, <span class="st">&quot;5/2020&quot;</span>,</span>
+<span id="cb8-2"><a href="#cb8-2"></a>                         <span class="st">&quot;6/2020&quot;</span>, <span class="st">&quot;7/2020&quot;</span>, <span class="st">&quot;8/2020&quot;</span>,</span>
+<span id="cb8-3"><a href="#cb8-3"></a>                         <span class="st">&quot;9/2020&quot;</span>, <span class="st">&quot;10/2020&quot;</span>, <span class="st">&quot;11/2020&quot;</span>,</span>
+<span id="cb8-4"><a href="#cb8-4"></a>                         <span class="st">&quot;12/2020&quot;</span>, <span class="st">&quot;1/2021&quot;</span>,<span class="st">&quot;2/2021&quot;</span>,</span>
+<span id="cb8-5"><a href="#cb8-5"></a>                         <span class="st">&quot;3/2021&quot;</span>, <span class="st">&quot;4/2021&quot;</span>))</span>
+<span id="cb8-6"><a href="#cb8-6"></a></span>
+<span id="cb8-7"><a href="#cb8-7"></a><span class="kw">colnames</span>(df_tbl9) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Date&quot;</span>, <span class="st">&quot;4/2020&quot;</span>, <span class="st">&quot;5/2020&quot;</span>,</span>
+<span id="cb8-8"><a href="#cb8-8"></a>                       <span class="st">&quot;6/2020&quot;</span>, <span class="st">&quot;7/2020&quot;</span>, <span class="st">&quot;8/2020&quot;</span>,</span>
+<span id="cb8-9"><a href="#cb8-9"></a>                       <span class="st">&quot;9/2020&quot;</span>, <span class="st">&quot;10/2020&quot;</span>, <span class="st">&quot;11/2020&quot;</span>,</span>
+<span id="cb8-10"><a href="#cb8-10"></a>                       <span class="st">&quot;12/2020&quot;</span>, <span class="st">&quot;1/2021&quot;</span>,<span class="st">&quot;2/2021&quot;</span>,</span>
+<span id="cb8-11"><a href="#cb8-11"></a>                       <span class="st">&quot;3/2021&quot;</span>, <span class="st">&quot;4/2021&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>df_tdy_tb9&lt;-</span>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="st">    </span><span class="kw">as.data.frame</span>(df_tbl9[<span class="dv">1</span>,]<span class="op">%&gt;%</span></span>
+<span id="cb9-3"><a href="#cb9-3"></a><span class="st">      </span><span class="kw">assign_in</span>(<span class="kw">list</span>(<span class="dv">1</span>,<span class="dv">1</span>),<span class="st">&quot;Month&quot;</span>)<span class="op">%&gt;%</span></span>
+<span id="cb9-4"><a href="#cb9-4"></a><span class="st">        </span><span class="kw">bind_rows</span>(</span>
+<span id="cb9-5"><a href="#cb9-5"></a>          df_tbl10[<span class="dv">16</span>,],</span>
+<span id="cb9-6"><a href="#cb9-6"></a>          (df_tbl10[<span class="dv">17</span><span class="op">:</span><span class="dv">27</span>,]<span class="op">%&gt;%</span></span>
+<span id="cb9-7"><a href="#cb9-7"></a><span class="st">                      </span><span class="kw">select</span>(<span class="dv">1</span>)<span class="op">%&gt;%</span></span>
+<span id="cb9-8"><a href="#cb9-8"></a><span class="st">                        </span><span class="kw">lapply</span>(<span class="cf">function</span>(x){</span>
+<span id="cb9-9"><a href="#cb9-9"></a>                          <span class="kw">gsub</span>(<span class="st">&quot;^&quot;</span>, <span class="st">&quot;Men, &quot;</span>, x)</span>
+<span id="cb9-10"><a href="#cb9-10"></a>                        }</span>
+<span id="cb9-11"><a href="#cb9-11"></a>                            )<span class="op">%&gt;%</span></span>
+<span id="cb9-12"><a href="#cb9-12"></a><span class="st">                              </span><span class="kw">cbind</span>(df_tbl9[<span class="dv">17</span><span class="op">:</span><span class="dv">27</span>,<span class="dv">2</span><span class="op">:</span><span class="dv">14</span>])),</span>
+<span id="cb9-13"><a href="#cb9-13"></a>          df_tbl10[<span class="dv">29</span>,],</span>
+<span id="cb9-14"><a href="#cb9-14"></a>          (df_tbl10[<span class="dv">30</span><span class="op">:</span><span class="dv">40</span>,]<span class="op">%&gt;%</span></span>
+<span id="cb9-15"><a href="#cb9-15"></a><span class="st">                      </span><span class="kw">select</span>(<span class="dv">1</span>)<span class="op">%&gt;%</span></span>
+<span id="cb9-16"><a href="#cb9-16"></a><span class="st">                        </span><span class="kw">lapply</span>(<span class="cf">function</span>(x){</span>
+<span id="cb9-17"><a href="#cb9-17"></a>                          <span class="kw">gsub</span>(<span class="st">&quot;^&quot;</span>, <span class="st">&quot;Women, &quot;</span>, x)</span>
+<span id="cb9-18"><a href="#cb9-18"></a>                        }</span>
+<span id="cb9-19"><a href="#cb9-19"></a>                            )<span class="op">%&gt;%</span></span>
+<span id="cb9-20"><a href="#cb9-20"></a><span class="st">                              </span><span class="kw">cbind</span>(df_tbl9[<span class="dv">30</span><span class="op">:</span><span class="dv">40</span>,<span class="dv">2</span><span class="op">:</span><span class="dv">14</span>]))</span>
+<span id="cb9-21"><a href="#cb9-21"></a>                  )</span>
+<span id="cb9-22"><a href="#cb9-22"></a>    )   </span></code></pre></div>
+<p>And repeated for <code>Table 10</code></p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r fold-hide"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>df_tdy_tb10&lt;-</span>
+<span id="cb10-2"><a href="#cb10-2"></a><span class="st">    </span><span class="kw">as.data.frame</span>(df_tbl10[<span class="dv">1</span>,]<span class="op">%&gt;%</span></span>
+<span id="cb10-3"><a href="#cb10-3"></a><span class="st">      </span><span class="kw">assign_in</span>(<span class="kw">list</span>(<span class="dv">1</span>,<span class="dv">1</span>),<span class="st">&quot;Month&quot;</span>)<span class="op">%&gt;%</span></span>
+<span id="cb10-4"><a href="#cb10-4"></a><span class="st">        </span><span class="kw">bind_rows</span>(</span>
+<span id="cb10-5"><a href="#cb10-5"></a>          df_tbl10[<span class="dv">16</span>,],</span>
+<span id="cb10-6"><a href="#cb10-6"></a>          (df_tbl10[<span class="dv">17</span><span class="op">:</span><span class="dv">27</span>,]<span class="op">%&gt;%</span></span>
+<span id="cb10-7"><a href="#cb10-7"></a><span class="st">                      </span><span class="kw">select</span>(<span class="dv">1</span>)<span class="op">%&gt;%</span></span>
+<span id="cb10-8"><a href="#cb10-8"></a><span class="st">                        </span><span class="kw">lapply</span>(<span class="cf">function</span>(x){</span>
+<span id="cb10-9"><a href="#cb10-9"></a>                          <span class="kw">gsub</span>(<span class="st">&quot;^&quot;</span>, <span class="st">&quot;Men, &quot;</span>, x)</span>
+<span id="cb10-10"><a href="#cb10-10"></a>                        }</span>
+<span id="cb10-11"><a href="#cb10-11"></a>                            )<span class="op">%&gt;%</span></span>
+<span id="cb10-12"><a href="#cb10-12"></a><span class="st">                              </span><span class="kw">cbind</span>(df_tbl10[<span class="dv">17</span><span class="op">:</span><span class="dv">27</span>,<span class="dv">2</span><span class="op">:</span><span class="dv">14</span>])),</span>
+<span id="cb10-13"><a href="#cb10-13"></a>          df_tbl10[<span class="dv">29</span>,],</span>
+<span id="cb10-14"><a href="#cb10-14"></a>          (df_tbl10[<span class="dv">30</span><span class="op">:</span><span class="dv">40</span>,]<span class="op">%&gt;%</span></span>
+<span id="cb10-15"><a href="#cb10-15"></a><span class="st">                      </span><span class="kw">select</span>(<span class="dv">1</span>)<span class="op">%&gt;%</span></span>
+<span id="cb10-16"><a href="#cb10-16"></a><span class="st">                        </span><span class="kw">lapply</span>(<span class="cf">function</span>(x){</span>
+<span id="cb10-17"><a href="#cb10-17"></a>                          <span class="kw">gsub</span>(<span class="st">&quot;^&quot;</span>, <span class="st">&quot;Women, &quot;</span>, x)</span>
+<span id="cb10-18"><a href="#cb10-18"></a>                        }</span>
+<span id="cb10-19"><a href="#cb10-19"></a>                            )<span class="op">%&gt;%</span></span>
+<span id="cb10-20"><a href="#cb10-20"></a><span class="st">                              </span><span class="kw">cbind</span>(df_tbl10[<span class="dv">30</span><span class="op">:</span><span class="dv">40</span>,<span class="dv">2</span><span class="op">:</span><span class="dv">14</span>]))</span>
+<span id="cb10-21"><a href="#cb10-21"></a>                  )</span>
+<span id="cb10-22"><a href="#cb10-22"></a>    )</span></code></pre></div>
+<p>Transposed for <code>df_tdy_tbl9</code> and repeated for <code>df_tdy_tbl10</code>.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r fold-show"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>df_tdy_tb9_t &lt;-</span>
+<span id="cb11-2"><a href="#cb11-2"></a><span class="st">  </span>df_tdy_tb9<span class="op">%&gt;%</span></span>
+<span id="cb11-3"><a href="#cb11-3"></a><span class="st">    </span><span class="kw">rownames_to_column</span>() <span class="op">%&gt;%</span></span>
+<span id="cb11-4"><a href="#cb11-4"></a><span class="st">      </span><span class="kw">pivot_longer</span>(<span class="op">-</span>rowname, <span class="st">&#39;variable&#39;</span>, <span class="st">&#39;value&#39;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb11-5"><a href="#cb11-5"></a><span class="st">        </span><span class="kw">pivot_wider</span>(variable, rowname)<span class="op">%&gt;%</span></span>
+<span id="cb11-6"><a href="#cb11-6"></a><span class="st">          </span>janitor<span class="op">::</span><span class="kw">row_to_names</span>(<span class="dv">1</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r fold-hide"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>df_tdy_tb10_t &lt;-</span>
+<span id="cb12-2"><a href="#cb12-2"></a><span class="st">  </span>df_tdy_tb10<span class="op">%&gt;%</span></span>
+<span id="cb12-3"><a href="#cb12-3"></a><span class="st">    </span><span class="kw">rownames_to_column</span>() <span class="op">%&gt;%</span></span>
+<span id="cb12-4"><a href="#cb12-4"></a><span class="st">      </span><span class="kw">pivot_longer</span>(<span class="op">-</span>rowname, <span class="st">&#39;variable&#39;</span>, <span class="st">&#39;value&#39;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb12-5"><a href="#cb12-5"></a><span class="st">        </span><span class="kw">pivot_wider</span>(variable, rowname)<span class="op">%&gt;%</span></span>
+<span id="cb12-6"><a href="#cb12-6"></a><span class="st">          </span>janitor<span class="op">::</span><span class="kw">row_to_names</span>(<span class="dv">1</span>)</span></code></pre></div>
 </div>
 </div>
 <div id="evaluation" class="section level2">
