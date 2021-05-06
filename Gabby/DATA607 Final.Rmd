@@ -119,10 +119,34 @@ url_34_xsls <- "https://www.bls.gov/cps/cpsaat34.xlsx"
 ```
 
 ```{r}
-head(df_tbl9  <- as.data.frame(html_table(read_html(url_9))[[2]]),5)
+df_tbl9  <- as.data.frame(html_table(read_html(url_9))[[2]])
 df_tbl10 <- as.data.frame(html_table(read_html(url_10))[[2]])
 df_tbl34 <- as.data.frame(html_table(read_html(url_34))[[2]])
 ```
+
+```{r}
+library(tidyr)
+test <- df_tbl9 %>% 
+
+colnames(test) <- c("Age_Group", "03/2020", "04/2020", "05/2020","06/2020","07/2020","08/2020","09/2020","10/2020","11/2020","12/2020","01/2021","02/2021","03/2021")
+
+men9<-test[16:27,]
+men9$Gender <- ("Male")
+#men9 <- men9 
+#%>% gather("Month_Year", "Population", 2:14)
+
+women9 <- test[29:40,]
+women9$Gender <- ("Female")
+# women9 <- women9 %>%
+#   gather("Month_Year", "Population", 2:14) 
+
+m_w_9 <- rbind(men9, women9)
+
+
+
+
+```
+
 
 ```{r}
 #table34 <- import(url_34_xsls)
