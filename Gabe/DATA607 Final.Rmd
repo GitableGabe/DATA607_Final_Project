@@ -131,11 +131,11 @@ head(df_tbl34 <- as.data.frame(html_table(read_html(url_34))[[2]]),5)
 ### Transform Data
 
 ```{r class.source = "fold-hide", results='hide'}
-(colnames(df_tbl10) <- c("Date", "4/2020", "5/2020",
+colnames(df_tbl10) <- c("Date", "4/2020", "5/2020",
                          "6/2020", "7/2020", "8/2020",
                          "9/2020", "10/2020", "11/2020",
                          "12/2020", "1/2021","2/2021",
-                         "3/2021", "4/2021"))
+                         "3/2021", "4/2021")
 
 colnames(df_tbl9) <- c("Date", "4/2020", "5/2020",
                        "6/2020", "7/2020", "8/2020",
@@ -216,6 +216,19 @@ df_tdy_tb10_t <-
           janitor::row_to_names(1)
 ```
 
+Sorted by categories 
+
+```{r}
+df_tdy_tb9_ts <- 
+  df_tdy_tb9_t %>%
+  select(1,2,3,15,4,16,5,17,6,18,7,19,8,20,9,21,10,22,11,23,12,24,13,25,14,26)
+```
+
+```{r}
+df_tdy_tb10_ts <- 
+  df_tdy_tb10_t %>%
+  select(1,2,3,15,4,16,5,17,6,18,7,19,8,20,9,21,10,22,11,23,12,24,13,25,14,26)
+```
 
 ## Evaluation
 

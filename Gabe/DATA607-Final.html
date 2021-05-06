@@ -1852,11 +1852,11 @@ Deadline management. Were your draft project proposal, project, and presentation
 </div>
 <div id="transform-data" class="section level3">
 <h3>Transform Data</h3>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r fold-hide"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>(<span class="kw">colnames</span>(df_tbl10) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Date&quot;</span>, <span class="st">&quot;4/2020&quot;</span>, <span class="st">&quot;5/2020&quot;</span>,</span>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r fold-hide"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="kw">colnames</span>(df_tbl10) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Date&quot;</span>, <span class="st">&quot;4/2020&quot;</span>, <span class="st">&quot;5/2020&quot;</span>,</span>
 <span id="cb8-2"><a href="#cb8-2"></a>                         <span class="st">&quot;6/2020&quot;</span>, <span class="st">&quot;7/2020&quot;</span>, <span class="st">&quot;8/2020&quot;</span>,</span>
 <span id="cb8-3"><a href="#cb8-3"></a>                         <span class="st">&quot;9/2020&quot;</span>, <span class="st">&quot;10/2020&quot;</span>, <span class="st">&quot;11/2020&quot;</span>,</span>
 <span id="cb8-4"><a href="#cb8-4"></a>                         <span class="st">&quot;12/2020&quot;</span>, <span class="st">&quot;1/2021&quot;</span>,<span class="st">&quot;2/2021&quot;</span>,</span>
-<span id="cb8-5"><a href="#cb8-5"></a>                         <span class="st">&quot;3/2021&quot;</span>, <span class="st">&quot;4/2021&quot;</span>))</span>
+<span id="cb8-5"><a href="#cb8-5"></a>                         <span class="st">&quot;3/2021&quot;</span>, <span class="st">&quot;4/2021&quot;</span>)</span>
 <span id="cb8-6"><a href="#cb8-6"></a></span>
 <span id="cb8-7"><a href="#cb8-7"></a><span class="kw">colnames</span>(df_tbl9) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Date&quot;</span>, <span class="st">&quot;4/2020&quot;</span>, <span class="st">&quot;5/2020&quot;</span>,</span>
 <span id="cb8-8"><a href="#cb8-8"></a>                       <span class="st">&quot;6/2020&quot;</span>, <span class="st">&quot;7/2020&quot;</span>, <span class="st">&quot;8/2020&quot;</span>,</span>
@@ -1921,6 +1921,13 @@ Deadline management. Were your draft project proposal, project, and presentation
 <span id="cb12-4"><a href="#cb12-4"></a><span class="st">      </span><span class="kw">pivot_longer</span>(<span class="op">-</span>rowname, <span class="st">&#39;variable&#39;</span>, <span class="st">&#39;value&#39;</span>) <span class="op">%&gt;%</span></span>
 <span id="cb12-5"><a href="#cb12-5"></a><span class="st">        </span><span class="kw">pivot_wider</span>(variable, rowname)<span class="op">%&gt;%</span></span>
 <span id="cb12-6"><a href="#cb12-6"></a><span class="st">          </span>janitor<span class="op">::</span><span class="kw">row_to_names</span>(<span class="dv">1</span>)</span></code></pre></div>
+<p>Sorted by categories</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>df_tdy_tb9_ts &lt;-<span class="st"> </span></span>
+<span id="cb13-2"><a href="#cb13-2"></a><span class="st">  </span>df_tdy_tb9_t <span class="op">%&gt;%</span></span>
+<span id="cb13-3"><a href="#cb13-3"></a><span class="st">  </span><span class="kw">select</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">15</span>,<span class="dv">4</span>,<span class="dv">16</span>,<span class="dv">5</span>,<span class="dv">17</span>,<span class="dv">6</span>,<span class="dv">18</span>,<span class="dv">7</span>,<span class="dv">19</span>,<span class="dv">8</span>,<span class="dv">20</span>,<span class="dv">9</span>,<span class="dv">21</span>,<span class="dv">10</span>,<span class="dv">22</span>,<span class="dv">11</span>,<span class="dv">23</span>,<span class="dv">12</span>,<span class="dv">24</span>,<span class="dv">13</span>,<span class="dv">25</span>,<span class="dv">14</span>,<span class="dv">26</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>df_tdy_tb10_ts &lt;-<span class="st"> </span></span>
+<span id="cb14-2"><a href="#cb14-2"></a><span class="st">  </span>df_tdy_tb10_t <span class="op">%&gt;%</span></span>
+<span id="cb14-3"><a href="#cb14-3"></a><span class="st">  </span><span class="kw">select</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">15</span>,<span class="dv">4</span>,<span class="dv">16</span>,<span class="dv">5</span>,<span class="dv">17</span>,<span class="dv">6</span>,<span class="dv">18</span>,<span class="dv">7</span>,<span class="dv">19</span>,<span class="dv">8</span>,<span class="dv">20</span>,<span class="dv">9</span>,<span class="dv">21</span>,<span class="dv">10</span>,<span class="dv">22</span>,<span class="dv">11</span>,<span class="dv">23</span>,<span class="dv">12</span>,<span class="dv">24</span>,<span class="dv">13</span>,<span class="dv">25</span>,<span class="dv">14</span>,<span class="dv">26</span>)</span></code></pre></div>
 </div>
 </div>
 <div id="evaluation" class="section level2">
