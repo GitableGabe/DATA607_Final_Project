@@ -131,14 +131,44 @@ head(df_tbl34 <- as.data.frame(html_table(read_html(url_34))[[2]]),5)
 ### Transform Data
 
 ```{r}
-test <- 
-  df_tbl10[1,]%>%
-    rbind(df_tbl10[16:27,])%>%
-    rbind(df_tbl10[29:40,])
+(colnames(df_tbl10) <- c("Date", "4/2020", "5/2020", "6/2020", "7/2020", "8/2020",
+           "9/2020", "10/2020", "11/2020", "12/2020", "1/2020","2/2020","3/2020"))
 ```
 
+
 ```{r}
-row.names(df_tbl10)
+
+text2<-
+  as.data.frame(
+    df_tbl10[17:27,1]%>%
+      lapply(function(x){
+        gsub("^", "Men, ", x)
+      }
+    )
+  )
+
+```
+
+
+
+```{r}
+test <- 
+  as.data.frame(df_tbl10[1,]%>%
+    assign_in(list(1,1),"Month")%>%
+      rbind(df_tbl10[16:27,])%>%
+                  lapply(function(x){
+                        gsub("Men,", "<", x)
+                        }
+              )
+)
+
+```
+
+#      rbind(df_tbl10[16:27,])%>%
+#        rbind(df_tbl10[29:40,])
+
+```{r}
+colnames(df_tbl10)
 ```
 
 

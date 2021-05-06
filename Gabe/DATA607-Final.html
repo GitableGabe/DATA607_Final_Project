@@ -1673,7 +1673,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">DATA607 Final</h1>
 <h4 class="author">Gabriella Martinez, Maliat Hossain, Gabriel Campos</h4>
-<h4 class="date">May 04 2021</h4>
+<h4 class="date">May 05 2021</h4>
 
 </div>
 
@@ -1852,11 +1852,38 @@ Deadline management. Were your draft project proposal, project, and presentation
 </div>
 <div id="transform-data" class="section level3">
 <h3>Transform Data</h3>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="kw">dim</span>(df_tbl10)</span></code></pre></div>
-<pre><code>## [1] 46 14</code></pre>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="co">#test &lt;- subset(df_tbl10[which(rownames(df_tbl10)==&#39;16 to 19 years&#39;):which(rownames(df_tbl10)==&#39;16 to 19 years&#39;),], select = 1:14)</span></span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>(<span class="kw">colnames</span>(df_tbl10) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Date&quot;</span>, <span class="st">&quot;4/2020&quot;</span>, <span class="st">&quot;5/2020&quot;</span>, <span class="st">&quot;6/2020&quot;</span>, <span class="st">&quot;7/2020&quot;</span>, <span class="st">&quot;8/2020&quot;</span>,</span>
+<span id="cb8-2"><a href="#cb8-2"></a>           <span class="st">&quot;9/2020&quot;</span>, <span class="st">&quot;10/2020&quot;</span>, <span class="st">&quot;11/2020&quot;</span>, <span class="st">&quot;12/2020&quot;</span>, <span class="st">&quot;1/2020&quot;</span>,<span class="st">&quot;2/2020&quot;</span>,<span class="st">&quot;3/2020&quot;</span>))</span></code></pre></div>
+<pre><code>##  [1] &quot;Date&quot;    &quot;4/2020&quot;  &quot;5/2020&quot;  &quot;6/2020&quot;  &quot;7/2020&quot;  &quot;8/2020&quot;  &quot;9/2020&quot; 
+##  [8] &quot;10/2020&quot; &quot;11/2020&quot; &quot;12/2020&quot; &quot;1/2020&quot;  &quot;2/2020&quot;  &quot;3/2020&quot;</code></pre>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>text2&lt;-</span>
+<span id="cb10-2"><a href="#cb10-2"></a><span class="st">  </span><span class="kw">as.data.frame</span>(</span>
+<span id="cb10-3"><a href="#cb10-3"></a>    df_tbl10[<span class="dv">17</span><span class="op">:</span><span class="dv">27</span>,<span class="dv">1</span>]<span class="op">%&gt;%</span></span>
+<span id="cb10-4"><a href="#cb10-4"></a><span class="st">      </span><span class="kw">lapply</span>(<span class="cf">function</span>(x){</span>
+<span id="cb10-5"><a href="#cb10-5"></a>        <span class="kw">gsub</span>(<span class="st">&quot;^&quot;</span>, <span class="st">&quot;Men, &quot;</span>, x)</span>
+<span id="cb10-6"><a href="#cb10-6"></a>      }</span>
+<span id="cb10-7"><a href="#cb10-7"></a>    )</span>
+<span id="cb10-8"><a href="#cb10-8"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>test &lt;-<span class="st"> </span></span>
+<span id="cb11-2"><a href="#cb11-2"></a><span class="st">  </span><span class="kw">as.data.frame</span>(df_tbl10[<span class="dv">1</span>,]<span class="op">%&gt;%</span></span>
+<span id="cb11-3"><a href="#cb11-3"></a><span class="st">    </span><span class="kw">assign_in</span>(<span class="kw">list</span>(<span class="dv">1</span>,<span class="dv">1</span>),<span class="st">&quot;Month&quot;</span>)<span class="op">%&gt;%</span></span>
+<span id="cb11-4"><a href="#cb11-4"></a><span class="st">      </span><span class="kw">rbind</span>(df_tbl10[<span class="dv">16</span><span class="op">:</span><span class="dv">27</span>,])<span class="op">%&gt;%</span></span>
+<span id="cb11-5"><a href="#cb11-5"></a><span class="st">                  </span><span class="kw">lapply</span>(<span class="cf">function</span>(x){</span>
+<span id="cb11-6"><a href="#cb11-6"></a>                        <span class="kw">gsub</span>(<span class="st">&quot;Men,&quot;</span>, <span class="st">&quot;&lt;&quot;</span>, x)</span>
+<span id="cb11-7"><a href="#cb11-7"></a>                        }</span>
+<span id="cb11-8"><a href="#cb11-8"></a>              )</span>
+<span id="cb11-9"><a href="#cb11-9"></a>)</span></code></pre></div>
 </div>
 </div>
+</div>
+<div id="rbinddf_tbl101627" class="section level1">
+<h1>rbind(df_tbl10[16:27,])%&gt;%</h1>
+</div>
+<div id="rbinddf_tbl102940" class="section level1">
+<h1>rbind(df_tbl10[29:40,])</h1>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="kw">colnames</span>(df_tbl10)</span></code></pre></div>
+<pre><code>##  [1] &quot;Date&quot;    &quot;4/2020&quot;  &quot;5/2020&quot;  &quot;6/2020&quot;  &quot;7/2020&quot;  &quot;8/2020&quot;  &quot;9/2020&quot; 
+##  [8] &quot;10/2020&quot; &quot;11/2020&quot; &quot;12/2020&quot; &quot;1/2020&quot;  &quot;2/2020&quot;  &quot;3/2020&quot;  NA</code></pre>
 <div id="evaluation" class="section level2">
 <h2>Evaluation</h2>
 </div>
