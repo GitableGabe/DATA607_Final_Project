@@ -157,23 +157,63 @@ test2 <- df_tb10_tdy %>%
   gather("Month_Year", "Rate", 2:14)
 ```
 
+```{r}
+
+test2<-
+as.data.frame(test2%>%
+  lapply(function(x){
+                          gsub("Men, |Women, ", "", x)
+                        }
+                            )
+)
+```
+
+
 
 ```{r}
 
-
+test2$Month_Year<- as.yearmon(test2$Month_Year) 
+test2$Rate <- as.numeric(test2$Rate)
 #test2<-test2 %>% 
 #  slice(c(- 1,- 9)) %>% 
 #  gather("Month_Year", "Rate", 2:14)
 
 
-ggplot(data = test2%>%filter(grepl("16 years and over",Label)), aes(Month_Year, Rate, color = Gender)) +
+ggplot(data = (as.data.frame(test2%>%
+  lapply(function(x){
+                          gsub("Men, |Women, ", "", x)
+                        }
+                            ))), aes(Month_Year, Rate, color = Gender)) +
   geom_line(size = 1) +
   geom_point() + 
-  labs(title = "New Marvel characters by alignment & gender",
-       subtitle = "(limited to characters with more than 100 appearances)",
+  labs(title = "test2 data",
+       subtitle = "their might be too much range and observations",
+       y = "Count of new characters", x = "")+ 
+  facet_grid( ~ Label) 
+```
+
+```{r}
+trying<-ggplot() +
+  geom_line(data = test2%>%filter(grepl("Women,",Label)), aes(Month_Year, Rate, color = "red"),size = 1) +
+  geom_line(data = test2%>%filter(grepl("Men,",Label)), aes(Month_Year, Rate, color = "blue"),size = 1) +
+  labs(title = "test2 data",
+       subtitle = "their might be too much range and observations",
        y = "Count of new characters", x = "")+ 
   facet_grid(. ~ Label) 
 ```
+
+```{r}
+(trying<-ggplot(data = test2, aes(Month_Year, Rate, colour = factor(Gender))) +
+  geom_line(size = 1) +
+  geom_point() + 
+  labs(title = "test2 data",
+       subtitle = "their might be too much range and observations",
+       y = "Count of new characters", x = "")+ 
+  facet_grid(. ~ Label) )
+```
+
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+IGNORE
 
 ```{r}
 marvel <- readr::read_csv("D:/Bulk Data/Excel Files/marvel-wikia-data.csv")
