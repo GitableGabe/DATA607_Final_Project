@@ -271,17 +271,30 @@ test3 <- df_tb10_tdy %>%
   gather("Month_Year", "Rate", 2:14)
   
 test3$Month_Year<- as.yearmon(test3$Month_Year)
-
-test3$Month_Yr <- format(as.Date(test3$Month_Year), "%Y-%m")
+test3$Rate <- as.numeric(test3$Rate)
 
 glimpse(test3)
 
-x <- as.yearmon("2021-03")
-x
-
+#line graph
 ggplot(test3, aes(x=Month_Year, y = Rate, color = Gender, group = Gender)) +
   geom_line() +
-  geom_point(size = 4, shape = 21)  # Also use a point with a color fill
+  geom_point(size = 4, shape = 21) + # Also use a point with a color fill
+  theme_minimal()+
+  theme(axis.text.x = element_text(angle = 45, hjust=1))+
+  labs(title = 'Unemployment Rates by Gender'
+       ,subtitle = "03/2020-03/2021",
+       x = "Month", y = "Rate")
+
+#bar plot
+p4 <- ggplot() + 
+  geom_bar(aes(y = Rate, x = Month_Year, 
+    fill = Gender), data = test3,
+    stat="identity")+theme_minimal()+  
+  theme(axis.text.x = element_text(angle = 45, hjust=1))+
+  labs(title = 'Unemployment Rates by Gender'
+       ,subtitle = "03/2020-03/2021",
+       x = "Month", y = "Rate")
+p4
 ```
 
 
