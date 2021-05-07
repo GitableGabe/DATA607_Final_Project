@@ -179,37 +179,13 @@ test2$Rate <- as.numeric(test2$Rate)
 #  gather("Month_Year", "Rate", 2:14)
 
 
-ggplot(data = (as.data.frame(test2%>%
-  lapply(function(x){
-                          gsub("Men, |Women, ", "", x)
-                        }
-                            ))), aes(Month_Year, Rate, color = Gender)) +
+(ggplot(data = test2, aes(Month_Year, Rate, color = Gender)) +
   geom_line(size = 1) +
   geom_point() + 
   labs(title = "test2 data",
        subtitle = "their might be too much range and observations",
        y = "Count of new characters", x = "")+ 
-  facet_grid( ~ Label) 
-```
-
-```{r}
-trying<-ggplot() +
-  geom_line(data = test2%>%filter(grepl("Women,",Label)), aes(Month_Year, Rate, color = "red"),size = 1) +
-  geom_line(data = test2%>%filter(grepl("Men,",Label)), aes(Month_Year, Rate, color = "blue"),size = 1) +
-  labs(title = "test2 data",
-       subtitle = "their might be too much range and observations",
-       y = "Count of new characters", x = "")+ 
-  facet_grid(. ~ Label) 
-```
-
-```{r}
-(trying<-ggplot(data = test2, aes(Month_Year, Rate, colour = factor(Gender))) +
-  geom_line(size = 1) +
-  geom_point() + 
-  labs(title = "test2 data",
-       subtitle = "their might be too much range and observations",
-       y = "Count of new characters", x = "")+ 
-  facet_grid(. ~ Label) )
+  facet_grid( ~ Label) )
 ```
 
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
