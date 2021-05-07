@@ -1,0 +1,210 @@
+---
+title: "DATA607 Final"
+author: "Gabriella Martinez, Maliat Hossain, Gabriel Campos"
+date: "`r format(Sys.Date(), '%B %d %Y')`"
+output:
+  ioslides_presentation: default
+  output: slidy_presentation
+  slidy_presentation: default
+  html_document:
+    df_print: paged
+    code_folding: "show"
+    includes:
+      in_header: header.html
+    css: ./lab.css
+    highlight: pygments
+    theme: readable
+    toc: true
+    toc_float: true
+  prettydoc::html_pretty:
+    theme: cayman
+  pdf_document: default
+editor_options: 
+  chunk_output_type: console
+---
+
+
+<!--match.arg(theme, themes()) : 
+    'arg' should be one of "default", "cerulean", "journal","flatly",
+    "darkly", "readable", "spacelab", "united", "cosmo", "lumen", "paper", 
+    "sandstone", "simplex", "yeti"  -------->
+
+```{r, echo=FALSE,warning=FALSE, results='hide', include=FALSE}
+# install.packages("rio")
+# ^^^^ only if needed 
+library(httr)
+library(readxl)
+library(rio)
+library(rvest)
+library(tidyverse)
+library(lubridate)
+library(zoo)
+```
+
+<!-- (https://rdrr.io/cran/reactable/man/reactable.html) -->
+
+
+
+```{r class.source = "fold-hide"}
+url_9  <- "https://www.bls.gov/web/empsit/cpseea09.htm"
+url_10 <- "https://www.bls.gov/web/empsit/cpseea10.htm"
+url_34 <- "https://www.bls.gov/cps/cpsaat34.htm"
+url_34_xsls <- "https://www.bls.gov/cps/cpsaat34.xlsx"
+```
+
+```{r}
+head(df_tb9  <- as.data.frame(html_table(read_html(url_9))[[2]]),5)
+head(df_tb10 <- as.data.frame(html_table(read_html(url_10))[[2]]),5)
+head(df_tb34 <- as.data.frame(html_table(read_html(url_34))[[2]]),5)
+```
+
+
+### Transform Data
+
+```{r class.source = "fold-hide", results='hide'}
+colnames(df_tb10) <- c("Label","2020-03", "2020-04",
+                         "2020-05", "2020-06", "2020-07",
+                         "2020-08", "2020-09", "2020-10",
+                         "2020-11", "2020-12","2021-01",
+                         "2021-02", "2021-03")
+
+colnames(df_tb9) <- c("Label", "2020-03", "2020-04",
+                         "2020-05", "2020-06", "2020-07",
+                         "2020-08", "2020-09", "2020-10",
+                         "2020-11", "2020-12","2021-01",
+                         "2021-02", "2021-03")
+```
+
+```{r}
+df_tb9_tdy<-
+    as.data.frame(df_tb9[1,]%>%
+      assign_in(list(1,1),"Month")%>%
+        bind_rows(
+          df_tb9[3,],
+          (df_tb9[4:14,]%>%
+                      select(1)%>%
+                        lapply(function(x){
+                          gsub("^", "Total, ", x)
+                        }
+                            )%>%
+                              cbind(df_tb9[4:14,2:14])),
+          df_tb9[16,],
+          (df_tb9[17:27,]%>%
+                      select(1)%>%
+                        lapply(function(x){
+                          gsub("^", "Men, ", x)
+                        }
+                            )%>%
+                              cbind(df_tb9[17:27,2:14])),
+          df_tb9[29,],
+          (df_tb9[30:40,]%>%
+                      select(1)%>%
+                        lapply(function(x){
+                          gsub("^", "Women, ", x)
+                        }
+                            )%>%
+                              cbind(df_tb9[30:40,2:14]))
+                  )
+    )
+# Adding male and female category
+df_tb9_tdy$Gender <- ifelse(grepl("Men,", df_tb9_tdy$Label), "Male",
+                            ifelse(grepl("Women,", df_tb9_tdy$Label), "Female", ""))
+```
+
+
+
+And repeated for `Table 10`
+
+```{r class.source = "fold-hide"}
+df_tb10_tdy<-
+    as.data.frame(df_tb10[1,]%>%
+      assign_in(list(1,1),"Month")%>%
+        bind_rows(
+          df_tb10[3,],
+          (df_tb10[4:14,]%>%
+                      select(1)%>%
+                        lapply(function(x){
+                          gsub("^", "Total, ", x)
+                        }
+                            )%>%
+                              cbind(df_tb10[4:14,2:14])),
+          df_tb10[16,],
+          (df_tb10[17:27,]%>%
+                      select(1)%>%
+                        lapply(function(x){
+                          gsub("^", "Men, ", x)
+                        }
+                            )%>%
+                              cbind(df_tb10[17:27,2:14])),
+          df_tb10[29,],
+          (df_tb10[30:40,]%>%
+                      select(1)%>%
+                        lapply(function(x){
+                          gsub("^", "Women, ", x)
+                        }
+                            )%>%
+                              cbind(df_tb10[30:40,2:14]))
+                  )
+    )
+# Adding male and female category
+df_tb10_tdy$Gender <- ifelse(grepl("Men,", df_tb10_tdy$Label), "Male",
+                            ifelse(grepl("Women,", df_tb10_tdy$Label), "Female", ""))
+```
+
+```{r}
+test2 <- df_tb10_tdy %>% 
+  slice(c(14,16,17,19,22,23,24,25,26,28,29,31,34,35,36,37)) %>% 
+  gather("Month_Year", "Rate", 2:14)
+```
+
+
+```{r}
+
+
+#test2<-test2 %>% 
+#  slice(c(- 1,- 9)) %>% 
+#  gather("Month_Year", "Rate", 2:14)
+
+
+ggplot(data = test2%>%filter(grepl("16 years and over",Label)), aes(Month_Year, Rate, color = Gender)) +
+  geom_line(size = 1) +
+  geom_point() + 
+  labs(title = "New Marvel characters by alignment & gender",
+       subtitle = "(limited to characters with more than 100 appearances)",
+       y = "Count of new characters", x = "")+ 
+  facet_grid(. ~ Label) 
+```
+
+```{r}
+marvel <- readr::read_csv("D:/Bulk Data/Excel Files/marvel-wikia-data.csv")
+```
+
+
+```{r}
+marvel <- filter(marvel, SEX != "", ALIGN != "", Year != "") %>% 
+  filter(!is.na(APPEARANCES), APPEARANCES>100) %>% 
+  mutate(SEX = stringr::str_replace(SEX, "Characters", "")) %>% 
+  arrange(desc(APPEARANCES)) %>%
+  rename(gender = SEX) %>% 
+  rename_all(tolower)
+
+marvel_count <- count(marvel, year, align, gender)
+
+```
+
+```{r}
+ggplot(data = marvel_count, aes(year, n, color = gender)) +
+  geom_line(size = 1) +
+  geom_point() + 
+  labs(title = "New Marvel characters by alignment & gender",
+       subtitle = "(limited to characters with more than 100 appearances)",
+       y = "Count of new characters", x = "")+ 
+  facet_grid(. ~ align) 
+```
+
+
+<details><summary>Click here</summary>
+
+<!------- Below is for removing excessive space in Rmarkdown | HTML formatting -------->
+
+<div class="tocify-extend-page" data-unique="tocify-extend-page" style="height: 0;"></div>
