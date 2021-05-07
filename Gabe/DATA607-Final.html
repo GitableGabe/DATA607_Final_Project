@@ -1673,7 +1673,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">DATA607 Final</h1>
 <h4 class="author">Gabriella Martinez, Maliat Hossain, Gabriel Campos</h4>
-<h4 class="date">May 06 2021</h4>
+<h4 class="date">May 07 2021</h4>
 
 </div>
 
@@ -1793,31 +1793,31 @@ Deadline management. Were your draft project proposal, project, and presentation
 <span id="cb1-3"><a href="#cb1-3"></a>url_<span class="dv">34</span> &lt;-<span class="st"> &quot;https://www.bls.gov/cps/cpsaat34.htm&quot;</span></span>
 <span id="cb1-4"><a href="#cb1-4"></a>url_<span class="dv">34</span>_xsls &lt;-<span class="st"> &quot;https://www.bls.gov/cps/cpsaat34.xlsx&quot;</span></span></code></pre></div>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">head</span>(df_tb9  &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">html_table</span>(<span class="kw">read_html</span>(url_<span class="dv">9</span>))[[<span class="dv">2</span>]]),<span class="dv">5</span>)</span></code></pre></div>
-<pre><code>##   Age, sex, and marital status  2020   2020   2020   2020   2020   2020   2020
-## 1 Age, sex, and marital status  Mar.   Apr.    May   June   July   Aug.  Sept.
-## 2                  AGE AND SEX                                                
-## 3     Total, 16 years and over 7,185 23,109 20,975 17,697 16,308 13,542 12,535
-## 4               16 to 19 years   834  1,636  1,653  1,222  1,024    924    963
-## 5               16 to 17 years   354    504    582    452    363    314    371
-##     2020   2020   2020   2021  2021  2021
-## 1   Oct.   Nov.   Dec.   Jan.  Feb.  Mar.
-## 2                                        
-## 3 11,049 10,728 10,736 10,130 9,972 9,710
-## 4    836    825    946    865   825   771
-## 5    299    314    302    337   325   278</code></pre>
+<pre><code>##   Age, sex, and marital status   2020   2020   2020   2020   2020   2020   2020
+## 1 Age, sex, and marital status   Apr.    May   June   July   Aug.  Sept.   Oct.
+## 2                  AGE AND SEX                                                 
+## 3     Total, 16 years and over 23,109 20,975 17,697 16,308 13,542 12,535 11,049
+## 4               16 to 19 years  1,636  1,653  1,222  1,024    924    963    836
+## 5               16 to 17 years    504    582    452    363    314    371    299
+##     2020   2020   2021  2021  2021  2021
+## 1   Nov.   Dec.   Jan.  Feb.  Mar.  Apr.
+## 2                                       
+## 3 10,728 10,736 10,130 9,972 9,710 9,812
+## 4    825    946    865   825   771   754
+## 5    314    302    337   325   278   261</code></pre>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw">head</span>(df_tb10 &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">html_table</span>(<span class="kw">read_html</span>(url_<span class="dv">10</span>))[[<span class="dv">2</span>]]),<span class="dv">5</span>)</span></code></pre></div>
-<pre><code>##   Age, sex, and marital status 2020 2020 2020 2020 2020 2020  2020 2020 2020
-## 1 Age, sex, and marital status Mar. Apr.  May June July Aug. Sept. Oct. Nov.
+<pre><code>##   Age, sex, and marital status 2020 2020 2020 2020 2020  2020 2020 2020 2020
+## 1 Age, sex, and marital status Apr.  May June July Aug. Sept. Oct. Nov. Dec.
 ## 2                  AGE AND SEX                                              
-## 3     Total, 16 years and over  4.4 14.8 13.3 11.1 10.2  8.4   7.8  6.9  6.7
-## 4               16 to 19 years 14.1 32.1 29.6 22.6 19.1 16.4  16.3 14.0 13.9
-## 5               16 to 17 years 16.3 28.0 29.0 23.2 17.7 14.8  17.2 14.1 14.9
-##   2020 2021 2021 2021
-## 1 Dec. Jan. Feb. Mar.
+## 3     Total, 16 years and over 14.8 13.3 11.1 10.2  8.4   7.8  6.9  6.7  6.7
+## 4               16 to 19 years 32.1 29.6 22.6 19.1 16.4  16.3 14.0 13.9 16.0
+## 5               16 to 17 years 28.0 29.0 23.2 17.7 14.8  17.2 14.1 14.9 14.5
+##   2021 2021 2021 2021
+## 1 Jan. Feb. Mar. Apr.
 ## 2                    
-## 3  6.7  6.3  6.2  6.0
-## 4 16.0 14.8 13.9 13.0
-## 5 14.5 15.9 14.8 12.6</code></pre>
+## 3  6.3  6.2  6.0  6.1
+## 4 14.8 13.9 13.0 12.3
+## 5 15.9 14.8 12.6 11.3</code></pre>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="kw">head</span>(df_tb34 &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">html_table</span>(<span class="kw">read_html</span>(url_<span class="dv">34</span>))[[<span class="dv">2</span>]]),<span class="dv">5</span>)</span></code></pre></div>
 <pre><code>##                                           Sex and reason       2020        2020
 ## 1                                         Sex and reason Unemployed  Unemployed
@@ -1949,6 +1949,15 @@ Deadline management. Were your draft project proposal, project, and presentation
 <span id="cb13-3"><a href="#cb13-3"></a><span class="st">  </span><span class="kw">select</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">15</span>,<span class="dv">4</span>,<span class="dv">16</span>,<span class="dv">5</span>,<span class="dv">17</span>,<span class="dv">6</span>,<span class="dv">18</span>,<span class="dv">7</span>,<span class="dv">19</span>,<span class="dv">8</span>,<span class="dv">20</span>,<span class="dv">9</span>,<span class="dv">21</span>,<span class="dv">10</span>,<span class="dv">22</span>,<span class="dv">11</span>,<span class="dv">23</span>,<span class="dv">12</span>,<span class="dv">24</span>,<span class="dv">13</span>,<span class="dv">25</span>,<span class="dv">14</span>,<span class="dv">26</span>)</span></code></pre></div>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>test&lt;-<span class="st"> </span>df_tb10_tdy[<span class="dv">2</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">14</span>]<span class="op">%&gt;%</span></span>
 <span id="cb14-2"><a href="#cb14-2"></a><span class="st">          </span><span class="kw">rbind</span>(df_tb10_tdy[<span class="dv">14</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">14</span>])</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>test2&lt;-<span class="st"> </span>df_tb10_tdy<span class="op">%&gt;%</span></span>
+<span id="cb15-2"><a href="#cb15-2"></a><span class="st">          </span><span class="kw">filter</span>(<span class="kw">grepl</span>(<span class="st">&quot;16 years and over&quot;</span>,Label))<span class="op">%&gt;%</span></span>
+<span id="cb15-3"><a href="#cb15-3"></a><span class="st">            </span><span class="kw">select</span>(<span class="op">-</span><span class="st"> `</span><span class="dt">Gender</span><span class="st">`</span>)<span class="op">%&gt;%</span></span>
+<span id="cb15-4"><a href="#cb15-4"></a><span class="st">    </span><span class="kw">rownames_to_column</span>() <span class="op">%&gt;%</span></span>
+<span id="cb15-5"><a href="#cb15-5"></a><span class="st">      </span><span class="kw">pivot_longer</span>(<span class="op">-</span>rowname, <span class="st">&#39;variable&#39;</span>, <span class="st">&#39;value&#39;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb15-6"><a href="#cb15-6"></a><span class="st">        </span><span class="kw">pivot_wider</span>(variable, rowname)<span class="op">%&gt;%</span></span>
+<span id="cb15-7"><a href="#cb15-7"></a><span class="st">          </span>janitor<span class="op">::</span><span class="kw">row_to_names</span>(<span class="dv">1</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a>test2&lt;-<span class="kw">transform</span>(test2, <span class="dt">Label =</span> zoo<span class="op">::</span><span class="kw">as.Date</span>(zoo<span class="op">::</span><span class="kw">as.yearmon</span>(Label, <span class="st">&quot;%m/%Y&quot;</span>)))</span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="co">#ggplot(test2, aes(x=`Label`, y = test2$`Total..16.years.and.over`)) + geom_histogram(x = test2$`Total..16.years.and.over`,..density..)</span></span></code></pre></div>
 </div>
 </div>
 <div id="evaluation" class="section level2">

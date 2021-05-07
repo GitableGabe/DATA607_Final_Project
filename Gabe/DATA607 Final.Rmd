@@ -256,6 +256,27 @@ test<- df_tb10_tdy[2,1:14]%>%
 ```
 
 
+```{r}
+test2<- df_tb10_tdy%>%
+          filter(grepl("16 years and over",Label))%>%
+            select(- `Gender`)%>%
+    rownames_to_column() %>%
+      pivot_longer(-rowname, 'variable', 'value') %>%
+        pivot_wider(variable, rowname)%>%
+          janitor::row_to_names(1)
+
+```
+
+```{r}
+test2<-transform(test2, Label = zoo::as.Date(zoo::as.yearmon(Label, "%m/%Y")))
+```
+
+
+```{r}
+#ggplot(test2, aes(x=`Label`, y = test2$`Total..16.years.and.over`)) + geom_histogram(x = test2$`Total..16.years.and.over`,..density..)
+```
+
+
 ## Evaluation
 
 
