@@ -245,7 +245,7 @@ test2 <- df_tb10_tdy %>%
 #  gather("Month_Year", "Rate", 2:14)
 
 
-ggplot(data = test2, aes(Month_Year, Rate, color = gender)) +
+ggplot(data = test2, aes(Month_Year, Rate, color = Gender)) +
   geom_line(size = 1) +
   geom_point() + 
   labs(title = "New Marvel characters by alignment & gender",
@@ -254,14 +254,19 @@ ggplot(data = test2, aes(Month_Year, Rate, color = gender)) +
   facet_grid(. ~ align) 
 
 
+
+
+```
+
+```{r}
 ggplot(test2, aes(x=factor(Month_Year), y = (Rate),color= Gender , group = Gender)) +
   geom_line() +
   geom_point(size = 4, shape = 21) + # Also use a point with a color fill
   theme_minimal()+
   facet_wrap(~Label, ncol = 2, scales = "free_x")+
   theme(axis.text.x = element_text(angle = 45, hjust=1))
-
 ```
+
 
 
 ```{r}

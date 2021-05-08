@@ -3,11 +3,7 @@ title: "DATA607 Final"
 author: "Gabriella Martinez, Maliat Hossain, Gabriel Campos"
 date: "`r format(Sys.Date(), '%B %d %Y')`"
 output:
-  ioslides_presentation: default
-  output: slidy_presentation
-  slidy_presentation: default
   html_document:
-    df_print: paged
     code_folding: "show"
     includes:
       in_header: header.html
@@ -16,8 +12,6 @@ output:
     theme: readable
     toc: true
     toc_float: true
-  prettydoc::html_pretty:
-    theme: cayman
   pdf_document: default
 editor_options: 
   chunk_output_type: console
@@ -153,7 +147,7 @@ df_tb10_tdy$Gender <- ifelse(grepl("Men,", df_tb10_tdy$Label), "Male",
 
 ```{r}
 test2 <- df_tb10_tdy %>% 
-  slice(c(14,16,17,19,22,23,24,25,26,28,29,31,34,35,36,37)) %>% 
+  slice(c(16,17,19,22,23,24,25,28,29,31,34,35,36,37)) %>% 
   gather("Month_Year", "Rate", 2:14)
 ```
 
