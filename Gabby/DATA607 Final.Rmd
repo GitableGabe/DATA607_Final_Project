@@ -133,12 +133,11 @@ head(df_tb34 <- as.data.frame(html_table(read_html(url_34))[[2]]),5)
 ### Transform Data
 
 ```{r class.source = "fold-hide", results='hide'}
-colnames(df_tb10) <- cbind(c("Label"),as.yearmon(c("2020-03", "2020-04",
+colnames(df_tb10) <- c("Label", "2020-03", "2020-04",
                          "2020-05", "2020-06", "2020-07",
                          "2020-08", "2020-09", "2020-10",
                          "2020-11", "2020-12","2021-01",
-                         "2021-02", "2021-03")))
-                              
+                         "2021-02", "2021-03")
 
 colnames(df_tb9) <- c("Label", "2020-03", "2020-04",
                          "2020-05", "2020-06", "2020-07",
@@ -220,7 +219,7 @@ df_tb10_tdy<-
     )
 # Adding male and female category
 df_tb10_tdy$Gender <- ifelse(grepl("Men,", df_tb10_tdy$Label), "Male",
-                            ifelse(grepl("Women,", df_tb10_tdy$Label), "Female", ""))
+                             ifelse(grepl("Women,", df_tb10_tdy$Label), "Female", ""))
 ```
 
 Transposed for `df_tdy_tb9` and repeated for `df_tdy_tb10`.
@@ -259,29 +258,24 @@ test<- df_tb10_tdy[,1:14]%>%
 
 ```{r}
 test2 <- df_tb10_tdy %>% 
-  slice(c(14,16,17,19,22,23,24,25,26,28,29,31,34,35,36,37)) %>% 
+  slice(c(16,17,19,22,23,24,25,28,29,31,34,35,36,37)) %>% 
   gather("Month_Year", "Rate", 2:14)
 
-test2<-test2 %>% 
-  slice(c(-1,-9)) %>% 
-  gather("Month_Year", "Rate", 2:14)
-
-
-ggplot(data = test2, aes(Month_Year, Rate, color = gender)) +
-  geom_line(size = 1) +
-  geom_point() + 
-  labs(title = "New Marvel characters by alignment & gender",
-       subtitle = "(limited to characters with more than 100 appearances)",
-       y = "Count of new characters", x = "")+ 
-  facet_grid(. ~ align) 
-
-
-ggplot(test2, aes(x=factor(Month_Year), y = (Rate),color= Gender , group = Gender)) +
-  geom_line() +
-  geom_point(size = 4, shape = 21) + # Also use a point with a color fill
-  theme_minimal()+
-  facet_wrap(~Label, ncol = 2, scales = "free_x")+
-  theme(axis.text.x = element_text(angle = 45, hjust=1))
+# ggplot(data = test2, aes(Month_Year, Rate, color = gender)) +
+#   geom_line(size = 1) +
+#   geom_point() + 
+#   labs(title = "New Marvel characters by alignment & gender",
+#        subtitle = "(limited to characters with more than 100 appearances)",
+#        y = "Count of new characters", x = "")+ 
+#   facet_grid(. ~ align) 
+# 
+# 
+# ggplot(test2, aes(x=factor(Month_Year), y = (Rate),color= Gender , group = Gender)) +
+#   geom_line() +
+#   geom_point(size = 4, shape = 21) + # Also use a point with a color fill
+#   theme_minimal()+
+#   facet_wrap(~Label, ncol = 2, scales = "free_x")+
+#   theme(axis.text.x = element_text(angle = 45, hjust=1))
 
 ```
 
