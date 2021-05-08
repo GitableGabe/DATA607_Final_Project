@@ -302,7 +302,8 @@ glimpse(test3)
 
 ```{r}
 #line graph
-ggplot(test3, aes(x=factor(Month_Year), y = (Rate), color = Gender, group = Gender)) +
+ggplot(test3, aes(x=factor(Month_Year), 
+                  y = (Rate), color = Gender, group = Gender)) +
   geom_line() +
   geom_point(size = 4, shape = 21) + # Also use a point with a color fill
   scale_y_continuous(limits = c(4, 16.5))+
@@ -313,7 +314,7 @@ ggplot(test3, aes(x=factor(Month_Year), y = (Rate), color = Gender, group = Gend
        x = "Month", y = "Rate")
 
 #bar plot
-p4 <- ggplot() + 
+ggplot() + 
   geom_bar(aes(y = Rate, x = factor(Month_Year), 
     fill = Gender), data = test3,
     stat="identity")+theme_minimal()+  
@@ -321,7 +322,7 @@ p4 <- ggplot() +
   labs(title = 'Unemployment Rates by Gender'
        ,subtitle = "03/2020-03/2021",
        x = "Month", y = "Rate")
-p4
+
 ```
 
 
