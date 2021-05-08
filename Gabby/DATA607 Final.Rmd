@@ -258,25 +258,26 @@ test<- df_tb10_tdy[,1:14]%>%
 
 ```{r}
 test2 <- df_tb10_tdy %>% 
-  slice(c(16,17,19,22,23,24,25,28,29,31,34,35,36,37)) %>% 
+  slice(c(16,17,19,22,23,24,25,28,29,31,34,35,36,37)) %>% #took out rows 14&26 (MF 16+)
   gather("Month_Year", "Rate", 2:14)
 
-# ggplot(data = test2, aes(Month_Year, Rate, color = gender)) +
-#   geom_line(size = 1) +
-#   geom_point() + 
-#   labs(title = "New Marvel characters by alignment & gender",
-#        subtitle = "(limited to characters with more than 100 appearances)",
-#        y = "Count of new characters", x = "")+ 
-#   facet_grid(. ~ align) 
-# 
-# 
-# ggplot(test2, aes(x=factor(Month_Year), y = (Rate),color= Gender , group = Gender)) +
-#   geom_line() +
-#   geom_point(size = 4, shape = 21) + # Also use a point with a color fill
-#   theme_minimal()+
-#   facet_wrap(~Label, ncol = 2, scales = "free_x")+
-#   theme(axis.text.x = element_text(angle = 45, hjust=1))
+test2<-
+as.data.frame(test2%>%
+  lapply(function(x){gsub("Men, |Women, ", "", x)}))
 
+test2$Month_Year<- as.yearmon(test2$Month_Year) 
+test2$Rate <- as.numeric(test2$Rate)
+
+#line graph by age group and gender
+(ggplot(data = test2, aes(Month_Year, Rate, color = Gender)) +
+  geom_line(size = 1) +
+  geom_point() + 
+  theme_minimal()+
+  theme(axis.text.x = element_text(angle = 45, hjust=1))+
+  labs(title = 'Unemployment Rates by Age Group and Gender'
+       ,subtitle = "03/2020-03/2021",
+       x = "Month", y = "Rate")+
+  facet_wrap( ~ Label, scales = "free_y"))
 ```
 
 
