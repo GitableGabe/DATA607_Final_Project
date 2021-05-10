@@ -133,11 +133,11 @@ head(df_tb34 <- as.data.frame(html_table(read_html(url_34))[[2]]),5)
 ### Transform Data
 
 ```{r class.source = "fold-hide", results='hide'}
-colnames(df_tb10) <- cbind(c("Label"),as.yearmon(c("2020-03", "2020-04",
+colnames(df_tb10) <- c("Label","2020-03", "2020-04",
                          "2020-05", "2020-06", "2020-07",
                          "2020-08", "2020-09", "2020-10",
                          "2020-11", "2020-12","2021-01",
-                         "2021-02", "2021-03")))
+                         "2021-02", "2021-03")
                               
 
 colnames(df_tb9) <- c("Label", "2020-03", "2020-04",
