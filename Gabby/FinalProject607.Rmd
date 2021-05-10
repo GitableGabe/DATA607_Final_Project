@@ -307,9 +307,9 @@ tbl_9 <- tbl_9 %>%
   geom_col(position="dodge") +
   theme_minimal()+
   theme(axis.text.x = element_text(angle=45, hjust=1))+
-  labs(title= 'Unemployment Rates by Age Group and Gender',
+  labs(title= 'Month over Month Employment Rate Change by Gender',
        subtitle="03/2020-03/2021",
-       x="Month", y="Rate")+
+       x="Month", y="Rate Change")+
   facet_wrap( ~ Label, scales = "free_y"))
 
 ```
