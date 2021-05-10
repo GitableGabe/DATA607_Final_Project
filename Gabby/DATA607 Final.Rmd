@@ -256,6 +256,7 @@ test<- df_tb10_tdy[,1:14]%>%
           gather("Month_Year", "Rate", 2:14)
 ```
 
+^[http://zevross.com/blog/2019/04/02/easy-multi-panel-plots-in-r-using-facet_wrap-and-facet_grid-from-ggplot2/]
 ```{r}
 test2 <- df_tb10_tdy %>% 
   slice(c(16,17,19,22,23,24,25,28,29,31,34,35,36,37)) %>% #took out rows 14&26 (MF 16+)
