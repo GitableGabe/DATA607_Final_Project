@@ -246,27 +246,27 @@ $MoM= \frac{Count - lag(Count)}{lag(Count)}$
 $MoM\_Rate =MoM\times100 :rounded\ to\ the\ tenth$ 
 where [`lag()`](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/lag) is a time series shift from the `stats` package.
 
+
 ```{r class.source = "fold-hide"}
 # Month over Month employment rate change by gender 
 #Dependency on df_tb9_tdy:     Rate and Gender
-df_tb9_bar <- df_tb9_tdy %>% 
+df_tb9_rt <- df_tb9_tdy %>% 
   slice(c(14,26)) %>% 
     gather("Month_Year", "Count", 2:14)
 
-df_tb9_bar$Month_Year<- as.yearmon(df_tb9_bar$Month_Year)
+df_tb9_rt$Month_Year<- as.yearmon(df_tb9_rt$Month_Year)
+df_tb9_rt$Count <- as.numeric(gsub(",","",df_tb9_rt$Count))
 
-df_tb9_bar$Count <- as.numeric(gsub(",","",df_tb9_bar$Count))
-
-df_tb9_bar <- df_tb9_bar %>% 
+df_tb9_rt <- df_tb9_rt %>% 
   group_by(Gender) %>% 
   mutate(MoM = (Count - lag(Count)) / lag(Count)) %>% 
-  mutate(MoM_Rate =  round(MoM * 100, 1))
+  mutate(MoM_Rate =  round(MoM * 100, 2))
 ```
 
 Or data sorted by rate is:
 
 ```{r, echo= FALSE,class.source = "fold-hide", results='hide'}
-head(df_tb9_bar[with(df_tb9_bar, order(-MoM_Rate)),])%>%
+head(df_tb9_rt[with(df_tb9_rt, order(-MoM_Rate)),])%>%
   kbl(row.names = FALSE) %>%
   kable_styling(bootstrap_options = "striped",position = "center", full_width = T)
 ```
@@ -281,35 +281,25 @@ head(df_tb9_bar[with(df_tb9_bar, order(-MoM_Rate)),])%>%
 summary(lm(Count~Gender, df_tb9_bar))
 ```
 
+
 ```{r}
 # Month over Month employment rate change by age and gender 
 #Dependency on df_tb9_tdy:     Count, age, and Gender
 
-df_tb9_bar <- df_tb9_tdy %>% 
+df_tb9_MoM <- df_tb9_tdy %>% 
   slice(c(16,17,19,22,23,24,25,28,29,31,34,35,36,37)) %>% 
   gather("Month_Year", "Count", 2:14)
 
-df_tb9_bar$Month_Year<- as.yearmon(df_tb9_bar$Month_Year) 
-df_tb9_bar$Count <- as.numeric(gsub(",","",df_tb9_bar$Count))
-#glimpse(tbl_9)
+df_tb9_MoM$Month_Year<- as.yearmon(df_tb9_MoM$Month_Year) 
+df_tb9_MoM$Count <- as.numeric(gsub(",","",df_tb9_MoM$Count))
 
-df_tb9_bar <- df_tb9_bar %>% 
+df_tb9_MoM <- df_tb9_MoM %>% 
   group_by(Gender, Label) %>% 
   mutate(MoM = (Count - lag(Count)) / lag(Count)) %>% 
   mutate(MoM_Rate =  round(MoM * 100, 1))
 ```
 
-```{r}
-##bar plot month over month age grp and geneder
-(ggplot(df_tb9_bar, aes(x=factor(Month_Year), y = (MoM), color = Gender, group = Gender, fill=Gender)) +
-  geom_col(position="dodge") +
-  theme_minimal()+
-  theme(axis.text.x = element_text(angle=45, hjust=1))+
-  labs(title= 'Month over Month Employment Rate Change by Age Group and Gender',
-       subtitle="03/2020-03/2021",
-       x="Month", y="Rate Change")+
-  facet_wrap( ~ Label, scales = "free_y"))
-```
+
 
 
 ## Evaluation
@@ -328,11 +318,11 @@ list_max<-pmax(df_ml_rt$MoM_Rate,df_fml_rt$MoM_Rate)
 ```
 
 ```{r}
-(df_max<-
-   df_tb9_bar%>%
-    filter(MoM_Rate == list_max)%>%
-      select(- Count,- MoM))%>%kbl(row.names = FALSE) %>%
-  kable_styling(bootstrap_options = "striped",position = "center", full_width = T)
+# (df_max<-
+#    df_tb9_bar%>%
+#     filter(MoM_Rate == list_max)%>%
+#       select(- Count,- MoM))%>%kbl(row.names = FALSE) %>%
+#   kable_styling(bootstrap_options = "striped",position = "center", full_width = T)
 ```
 
 ## Visualizations
@@ -351,7 +341,19 @@ list_max<-pmax(df_ml_rt$MoM_Rate,df_fml_rt$MoM_Rate)
 ```
 
 ```{r}
-ggplot(df_tb9_bar, aes(x=factor(Month_Year), y=MoM, fill=Gender)) + 
+##bar plot month over month age grp and geneder
+(ggplot(df_tb9_MoM, aes(x=factor(Month_Year), y = (MoM), color = Gender, group = Gender, fill=Gender)) +
+  geom_col(position="dodge") +
+  theme_minimal()+
+  theme(axis.text.x = element_text(angle=45, hjust=1))+
+  labs(title= 'Month over Month Employment Rate Change by Age Group and Gender',
+       subtitle="03/2020-03/2021",
+       x="Month", y="Rate Change")+
+  facet_wrap( ~ Label, scales = "free_y"))
+```
+
+```{r}
+ggplot(df_tb9_rt, aes(x=factor(Month_Year), y=MoM, fill=Gender)) + 
   geom_col(position="dodge") +
   scale_y_continuous(labels = scales::percent)+  
   theme_minimal()+
