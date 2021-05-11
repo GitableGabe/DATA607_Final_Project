@@ -306,23 +306,23 @@ df_tb9_MoM <- df_tb9_MoM %>%
 
 ```{r}
 df_ml_rt <-
-  df_tb9_bar%>%
+  df_tb9_rt%>%
     filter(Gender == "Male")%>%
       select(- Count,- MoM)
 
 df_fml_rt <-
-  df_tb9_bar%>%
+  df_tb9_rt%>%
     filter(Gender == "Female")%>%
       select(- Count,- MoM)
 list_max<-pmax(df_ml_rt$MoM_Rate,df_fml_rt$MoM_Rate)
 ```
 
 ```{r}
-# (df_max<-
-#    df_tb9_bar%>%
-#     filter(MoM_Rate == list_max)%>%
-#       select(- Count,- MoM))%>%kbl(row.names = FALSE) %>%
-#   kable_styling(bootstrap_options = "striped",position = "center", full_width = T)
+(df_max<-
+   df_tb9_rt%>%
+    filter(MoM_Rate == list_max)%>%
+      select(- Count,- MoM))%>%kbl(row.names = FALSE) %>%
+  kable_styling(bootstrap_options = "striped",position = "center", full_width = T)
 ```
 
 ## Visualizations
