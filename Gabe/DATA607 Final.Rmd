@@ -29,10 +29,14 @@ editor_options:
 # install.packages("rio")
 # ^^^^ only if needed 
 library(httr)
+library(kableExtra)
+library(lubridate)
 library(readxl)
 library(rio)
+library(reactable)
 library(rvest)
 library(tidyverse)
+library(zoo)
 ```
 
 <!-- (https://rdrr.io/cran/reactable/man/reactable.html) -->
@@ -80,9 +84,9 @@ necessary simplifying assumptions so that you can deliver your work on time!
 <div class="nobullet">
 - [x] Proposal describes your motivation for performing this analysis
 - [x] Proposal describes likely data sources.
-- [ ] Your project has a recognizable “data science workflow,” such as the OSEMN workflow or Hadley Wickham’s Grammar of Data Science. [Example: First the data is acquired, then necessary transformations and clean-up are performed, then the analysis and presentation work is performed] 
+- [ ] Your project has a recognizable “data science workflow,” such as the <span style="color:blue">OSEMN</span> workflow or Hadley Wickham’s Grammar of Data Science. [Example: First the data is acquired, then necessary transformations and clean-up are performed, then the analysis and presentation work is performed] 
 - [x] Project includes data from at least two different types of data sources (e.g., two or more of these: relational or CSV,Neo4J, web page [scraped or API], MongoDB, etc.)
-- [ ] Project includes at least one data transformation operation. [Examples: transforming from wide to long; converting columns to date format]
+- [x] Project includes at least one data transformation operation. [Examples: transforming from wide to long; converting columns to date format]
 - [ ] Project includes at least one statistical analysis and at least one graphics that describes or validates your data.
 - [ ] Project includes at least one graphic that supports your conclusion(s).
 - [ ] Project includes at least one statistical analysis that supports your conclusion(s).
@@ -112,175 +116,296 @@ In order to conduct our studies we used data from [U.S. Bureau of Labor Statisti
 
 * [Table 9 : *Employed persons by occupation, sex, and age*](https://www.bls.gov/cps/cpsaat09.htm)
 * [Table 10: *Employed persons by occupation, race, Hispanic or Latino ethnicity, and sex*](https://www.bls.gov/cps/cpsaat10.htm)
-* [Table 34: *Unemployed jobseekers by sex, reason for unemployment, and active jobsearch methods used*](https://www.bls.gov/cps/cpsaat34.htm)
+
+
+<!------- * [Table 34: *Unemployed jobseekers by sex, reason for unemployment, and active jobsearch methods used*](https://www.bls.gov/cps/cpsaat34.htm) --------->
+
+The data was imported by encapsulating the functions `as.dataframe()`, `html_table()` and `read_html`, the subsetting. 
 
 ```{r class.source = "fold-hide"}
 url_9  <- "https://www.bls.gov/web/empsit/cpseea09.htm"
 url_10 <- "https://www.bls.gov/web/empsit/cpseea10.htm"
-url_34 <- "https://www.bls.gov/cps/cpsaat34.htm"
-url_34_xsls <- "https://www.bls.gov/cps/cpsaat34.xlsx"
 ```
 
-```{r}
-head(df_tb9  <- as.data.frame(html_table(read_html(url_9))[[2]]),5)
-head(df_tb10 <- as.data.frame(html_table(read_html(url_10))[[2]]),5)
-head(df_tb34 <- as.data.frame(html_table(read_html(url_34))[[2]]),5)
+```{r, include=FALSE}
+#url_34 <- "https://www.bls.gov/cps/cpsaat34.htm"
+#url_34_xsls <- "https://www.bls.gov/cps/cpsaat34.xlsx"
+```
+
+
+```{r class.source = "fold-hide"}
+head(df_tb9  <- as.data.frame(html_table(read_html(url_9))[[2]]),5)%>%
+  reactable(highlight = TRUE, pagination = FALSE, height = 450)
+```
+<font size="11" color = "navy blue">Table 9 Data</font>
+
+```{r class.source = "fold-hide"}
+head(df_tb10 <- as.data.frame(html_table(read_html(url_10))[[2]]),5)%>%
+  reactable(highlight = TRUE, pagination = FALSE, height = 450)
+```
+<font size="11" color = "navy blue">Table 10 Data</font>
+
+
+```{r, include=FALSE}
+#head(df_tb34 <- as.data.frame(html_table(read_html(url_34))[[2]]),5)
 ```
 
 
 ### Transform Data
 
-```{r class.source = "fold-hide", results='hide'}
-colnames(df_tb10) <- c("Label", "3/2020", "4/2020",
-                         "5/2020", "6/2020", "7/2020",
-                         "8/2020", "9/2020", "10/2020",
-                         "11/2020", "12/2020","1/2021",
-                         "2/2021", "3/2021")
+Data manipulation and $tidying$ included:
 
-colnames(df_tb9) <- c("Label", "3/2020", "4/2020",
-                         "5/2020", "6/2020", "7/2020",
-                         "8/2020", "9/2020", "10/2020",
-                         "11/2020", "12/2020","1/2021",
-                         "2/2021", "3/2021")
+* relabeling column values to reflect a **(***4 digit: year***)** $-$ **(***2 digit: month***)** (`%y%m`) format.
+* subsetting data frames to remove unnecessary data or blank rows with the help of piping `%>%`
+* categorizing data with a `Gender` column, that included a `Male`,`Female` and `Total` value respectively.
+  **Note:** Total value was used to to specify data that reflect total unemployment counts.
+
+```{r class.source = "fold-hide", results='hide'}
+colnames(df_tb10) <- c("Label","2020-03", "2020-04",
+                         "2020-05", "2020-06", "2020-07",
+                         "2020-08", "2020-09", "2020-10",
+                         "2020-11", "2020-12","2021-01",
+                         "2021-02", "2021-03")
+                              
+
+colnames(df_tb9) <- c("Label", "2020-03", "2020-04",
+                         "2020-05", "2020-06", "2020-07",
+                         "2020-08", "2020-09", "2020-10",
+                         "2020-11", "2020-12","2021-01",
+                         "2021-02", "2021-03")
 ```
 
 ```{r}
 df_tb9_tdy<-
     as.data.frame(df_tb9[1,]%>%
       assign_in(list(1,1),"Month")%>%
-        bind_rows(
-          df_tb9[3,],
-          (df_tb9[4:14,]%>%
-                      select(1)%>%
-                        lapply(function(x){
-                          gsub("^", "Total, ", x)
-                        }
-                            )%>%
-                              cbind(df_tb9[4:14,2:14])),
-          df_tb9[16,],
-          (df_tb9[17:27,]%>%
-                      select(1)%>%
-                        lapply(function(x){
-                          gsub("^", "Men, ", x)
-                        }
-                            )%>%
-                              cbind(df_tb9[17:27,2:14])),
-          df_tb9[29,],
-          (df_tb9[30:40,]%>%
-                      select(1)%>%
-                        lapply(function(x){
-                          gsub("^", "Women, ", x)
-                        }
-                            )%>%
-                              cbind(df_tb9[30:40,2:14]))
-                  )
+        bind_rows(df_tb9[3:14,],
+          df_tb9[16:27,],
+          df_tb9[29:40,])
     )
 # Adding male and female category
-df_tb9_tdy$Gender <- ifelse(grepl("Men,", df_tb9_tdy$Label), "Male",
-                            ifelse(grepl("Women,", df_tb9_tdy$Label), "Female", ""))
+df_tb9_tdy$Gender<-"Total"
+df_tb9_tdy$Gender[14:25] <- "Male"
+df_tb9_tdy$Gender[26:37] <- "Female"
 ```
 
+And repeated for `Table 10`.
 
-
-And repeated for `Table 10`
+This $tidy$ data is the baseline used for our evaluation of the comparison between unemployment rates of men and women, during the beginning month until present day, of the pandemic. 
 
 ```{r class.source = "fold-hide"}
 df_tb10_tdy<-
     as.data.frame(df_tb10[1,]%>%
       assign_in(list(1,1),"Month")%>%
-        bind_rows(
-          df_tb10[3,],
-          (df_tb10[4:14,]%>%
-                      select(1)%>%
-                        lapply(function(x){
-                          gsub("^", "Total, ", x)
-                        }
-                            )%>%
-                              cbind(df_tb10[4:14,2:14])),
-          df_tb10[16,],
-          (df_tb10[17:27,]%>%
-                      select(1)%>%
-                        lapply(function(x){
-                          gsub("^", "Men, ", x)
-                        }
-                            )%>%
-                              cbind(df_tb10[17:27,2:14])),
-          df_tb10[29,],
-          (df_tb10[30:40,]%>%
-                      select(1)%>%
-                        lapply(function(x){
-                          gsub("^", "Women, ", x)
-                        }
-                            )%>%
-                              cbind(df_tb10[30:40,2:14]))
-                  )
+        bind_rows(df_tb10[3:14,],
+          df_tb10[16:27,],
+          df_tb10[29:40,])
     )
+
 # Adding male and female category
-df_tb10_tdy$Gender <- ifelse(grepl("Men,", df_tb10_tdy$Label), "Male",
-                            ifelse(grepl("Women,", df_tb10_tdy$Label), "Female", ""))
+df_tb10_tdy$Gender<-"Total"
+df_tb10_tdy$Gender[14:25] <- "Male"
+df_tb10_tdy$Gender[26:37] <- "Female"
 ```
 
-Transposed for `df_tdy_tb9` and repeated for `df_tdy_tb10`.
+This $tidy$ data is the baseline used for our evaluation of the comparison between unemployment rates of men and women, during the beginning month until present day, of the pandemic. 
 
-```{r class.source = "fold-show"}
-df_tb9_tdy_t <-
-  df_tb9_tdy%>%
-    rownames_to_column() %>%
-      pivot_longer(-rowname, 'variable', 'value') %>%
-        pivot_wider(variable, rowname)%>%
-          janitor::row_to_names(1)
+Using [**ZevRoss**: Know Your Data | *Easy multi-panel plots in R using `facet_wrap()` and `facet()_grid()` from ggplot2](http://zevross.com/blog/2019/04/02/easy-multi-panel-plots-in-r-using-facet_wrap-and-facet_grid-from-ggplot2/) as a point of reference, we continue to transform the data.\newline
+Specifically:
+
+* `regex` is used within the `gsub()` function, to remove `,` from our `Rate` column.
+* `Month` and `Rate` is then transformed to data types that will allow for further analysis.
+
+
+```{r class.source = "fold-hide"}
+#Dependency on df_tb10_tdy    Rate, Gender, Age Group
+df_tb10_ln <- as.data.frame(df_tb10_tdy %>% 
+  slice(c(16,17,19,22,23,24,25,28,29,31,34,35,36,37)) %>% 
+    gather("Month_Year", "Rate", 2:14)%>%
+      lapply(function(x){ 
+        gsub(",", "", x)}))
 ```
 
 ```{r class.source = "fold-hide"}
-df_tb10_tdy_t <-
-  df_tb10_tdy%>%
-    rownames_to_column() %>%
-      pivot_longer(-rowname, 'variable', 'value') %>%
-        pivot_wider(variable, rowname)%>%
-          janitor::row_to_names(1)
+df_tb10_ln$Month_Year<- as.yearmon(df_tb10_ln$Month_Year) 
+df_tb10_ln$Rate <- as.numeric(df_tb10_ln$Rate)
 ```
 
-Sorted by categories 
+When sorted, it is easy to see that the highest unemployment rates overall, did occur among women between the ages of $16\ to\ 19$, during the months of $March\ and\ April\ of\ 2020$, by a small margin over men $18\ to\ 19$ in $March\ \&\ April\ 2020$
 
-```{r}
-df_tb9_tdy_ts <- 
-  df_tb9_tdy_t %>%
-  select(1,2,3,15,4,16,5,17,6,18,7,19,8,20,9,21,10,22,11,23,12,24,13,25,14,26)
+```{r, echo= FALSE}
+head(df_tb10_ln[with(df_tb10_ln, order(-Rate)),])%>%
+  kbl(row.names = FALSE) %>%
+  kable_styling(bootstrap_options = "striped",position = "center", full_width = T)
+```
+
+From here, the data is transformed in a month over month format in order to assess the data as a trend throughout the year. The functions used to create this data frame included, piping `%>%`, `slice()`, `gather()` and `mutate()`. Conversion of dates and counts with `as.yearmon()` & `as.numeric()` also followed.
+The calculations for our month-over-month (`MoM`) values and rates were as follows:
+
+$MoM= \frac{Count - lag(Count)}{lag(Count)}$ 
+$MoM\_Rate =MoM\times100 :rounded\ to\ the\ tenth$ 
+where [`lag()`](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/lag) is a time series shift from the `stats` package.
+
+```{r class.source = "fold-hide"}
+# Month over Month employment rate change by gender 
+#Dependency on df_tb9_tdy:     Rate and Gender
+df_tb9_bar <- df_tb9_tdy %>% 
+  slice(c(14,26)) %>% 
+    gather("Month_Year", "Count", 2:14)
+
+df_tb9_bar$Month_Year<- as.yearmon(df_tb9_bar$Month_Year)
+
+df_tb9_bar$Count <- as.numeric(gsub(",","",df_tb9_bar$Count))
+
+df_tb9_bar <- df_tb9_bar %>% 
+  group_by(Gender) %>% 
+  mutate(MoM = (Count - lag(Count)) / lag(Count)) %>% 
+  mutate(MoM_Rate =  round(MoM * 100, 1))
+```
+
+Or data sorted by rate is:
+
+```{r, echo= FALSE,class.source = "fold-hide", results='hide'}
+head(df_tb9_bar[with(df_tb9_bar, order(-MoM_Rate)),])%>%
+  kbl(row.names = FALSE) %>%
+  kable_styling(bootstrap_options = "striped",position = "center", full_width = T)
 ```
 
 
 
-```{r}
-test<- df_tb10_tdy[2,1:14]%>%
-          rbind(df_tb10_tdy[14,1:14])
-```
-
 
 ```{r}
-test2<- df_tb10_tdy%>%
-          filter(grepl("16 years and over",Label))%>%
-            select(- `Gender`)%>%
-    rownames_to_column() %>%
-      pivot_longer(-rowname, 'variable', 'value') %>%
-        pivot_wider(variable, rowname)%>%
-          janitor::row_to_names(1)
+#testing linear model. issue: gender is categorical var- need to look into this
+# only accounts for 1.18% of data, Multiple R-squared:  0.0118
 
+summary(lm(Count~Gender, df_tb9_bar))
 ```
 
 ```{r}
-test2<-transform(test2, Label = zoo::as.Date(zoo::as.yearmon(Label, "%m/%Y")))
+# Month over Month employment rate change by age and gender 
+#Dependency on df_tb9_tdy:     Count, age, and Gender
+
+df_tb9_bar <- df_tb9_tdy %>% 
+  slice(c(16,17,19,22,23,24,25,28,29,31,34,35,36,37)) %>% 
+  gather("Month_Year", "Count", 2:14)
+
+df_tb9_bar$Month_Year<- as.yearmon(df_tb9_bar$Month_Year) 
+df_tb9_bar$Count <- as.numeric(gsub(",","",df_tb9_bar$Count))
+#glimpse(tbl_9)
+
+df_tb9_bar <- df_tb9_bar %>% 
+  group_by(Gender, Label) %>% 
+  mutate(MoM = (Count - lag(Count)) / lag(Count)) %>% 
+  mutate(MoM_Rate =  round(MoM * 100, 1))
 ```
 
-
 ```{r}
-#ggplot(test2, aes(x=`Label`, y = test2$`Total..16.years.and.over`)) + geom_histogram(x = test2$`Total..16.years.and.over`,..density..)
+##bar plot month over month age grp and geneder
+(ggplot(df_tb9_bar, aes(x=factor(Month_Year), y = (MoM), color = Gender, group = Gender, fill=Gender)) +
+  geom_col(position="dodge") +
+  theme_minimal()+
+  theme(axis.text.x = element_text(angle=45, hjust=1))+
+  labs(title= 'Month over Month Employment Rate Change by Age Group and Gender',
+       subtitle="03/2020-03/2021",
+       x="Month", y="Rate Change")+
+  facet_wrap( ~ Label, scales = "free_y"))
 ```
 
 
 ## Evaluation
 
+```{r}
+df_ml_rt <-
+  df_tb9_bar%>%
+    filter(Gender == "Male")%>%
+      select(- Count,- MoM)
+
+df_fml_rt <-
+  df_tb9_bar%>%
+    filter(Gender == "Female")%>%
+      select(- Count,- MoM)
+list_max<-pmax(df_ml_rt$MoM_Rate,df_fml_rt$MoM_Rate)
+```
+
+```{r}
+(df_max<-
+   df_tb9_bar%>%
+    filter(MoM_Rate == list_max)%>%
+      select(- Count,- MoM))%>%kbl(row.names = FALSE) %>%
+  kable_styling(bootstrap_options = "striped",position = "center", full_width = T)
+```
 
 ## Visualizations
+
+**df_tb10_ln**
+```{r}
+(ggplot(data = df_tb10_ln, aes(Month_Year, Rate, color = Gender, group = Gender)) +
+  geom_line(size = 1) +
+  geom_point() + 
+  theme_minimal()+
+  theme(axis.text.x = element_text(angle = 45, hjust=1))+
+  labs(title = 'Unemployment Rates by Age Group and Gender'
+       ,subtitle = "03/2020-03/2021",
+       x = "Month", y = "Rate")+
+  facet_wrap( ~ Label, scales = "free_y"))
+```
+
+```{r}
+ggplot(df_tb9_bar, aes(x=factor(Month_Year), y=MoM, fill=Gender)) + 
+  geom_col(position="dodge") +
+  scale_y_continuous(labels = scales::percent)+  
+  theme_minimal()+
+  theme(axis.text.x = element_text(angle = 45, hjust=1))+
+  labs(title = 'Month over Month Employment Rate Change by Gender'
+       ,subtitle = "03/2020-03/2021",
+       x = "Month", y = "Rate Chnage")
+```
+
+
+```{r}
+#Dependency on df_tb10_tdy:     Rate and Gender
+#data transformation operation: from wide to long function: gather, package: tidyr  
+df_tb10_trend <- df_tb10_tdy %>% 
+  slice(c(14,26)) %>% 
+  gather("Month_Year", "Rate", 2:14)
+
+#data transformation operation: date format function: as.yearmon, package: zoo  
+
+```
+
+```{r}
+df_tb10_trend$Month_Year<- as.yearmon(df_tb10_trend$Month_Year) 
+df_tb10_trend$Rate <- as.numeric(df_tb10_trend$Rate)
+```
+
+
+```{r}
+#line graph
+ggplot(df_tb10_trend, aes(x=factor(Month_Year), y = (Rate), color = Gender, group = Gender)) +
+  geom_line() +
+  geom_point(size = 4, shape = 21) + # Also use a point with a color fill
+  scale_y_continuous(limits = c(4, 16.5))+
+  theme_minimal()+
+  theme(axis.text.x = element_text(angle = 45, hjust=1))+
+  labs(title = 'Unemployment Rates by Gender'
+       ,subtitle = "03/2020-03/2021",
+       x = "Month", y = "Rate")
+
+
+```
+
+```{r}
+#bar plot
+p4 <- ggplot() + 
+  geom_bar(aes(y = Rate, x = factor(Month_Year), 
+    fill = Gender), data = df_tb10_trend,
+    stat="identity")+theme_minimal()+  
+  theme(axis.text.x = element_text(angle = 45, hjust=1))+
+  labs(title = 'Unemployment Rates by Gender'
+       ,subtitle = "03/2020-03/2021",
+       x = "Month", y = "Rate")
+p4
+```
 
 
 ## Conclusion
