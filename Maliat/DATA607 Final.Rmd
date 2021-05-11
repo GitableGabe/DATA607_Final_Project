@@ -126,35 +126,35 @@ The data was imported by encapsulating the functions `as.dataframe()`, `html_tab
 ```{r class.source = "fold-hide"}
 url_9  <- "https://www.bls.gov/web/empsit/cpseea09.htm"
 url_10 <- "https://www.bls.gov/web/empsit/cpseea10.htm"
+url_30 <- "https://www.bls.gov/web/empsit/cpseea30.htm"
+
 ```
 
-```{r, include=FALSE}
-#url_34 <- "https://www.bls.gov/cps/cpsaat34.htm"
-#url_34_xsls <- "https://www.bls.gov/cps/cpsaat34.xlsx"
-```
-
-
+<font size="5" color = "navy blue">Table 9 Data</font>
 ```{r class.source = "fold-hide"}
 head(df_tb9  <- as.data.frame(html_table(read_html(url_9))[[2]]),5)%>%
   reactable(highlight = TRUE, pagination = FALSE, height = 450)
 ```
-<font size="11" color = "navy blue">Table 9 Data</font>
 
 
 <br>
 ________________________________________________________________________________
 <br>
 
+<font size="5" color = "navy blue">Table 10 Data</font>
 
 ```{r class.source = "fold-hide"}
 head(df_tb10 <- as.data.frame(html_table(read_html(url_10))[[2]]),5)%>%
   reactable(highlight = TRUE, pagination = FALSE, height = 450)
 ```
-<font size="11" color = "navy blue">Table 10 Data</font>
 
+<font size="5" color = "navy blue">Table 30 Data</font>
 
-```{r, include=FALSE}
-#head(df_tb34 <- as.data.frame(html_table(read_html(url_34))[[2]]),5)
+```{r class.source = "fold-hide"}
+head(df_tb30 <- as.data.frame(html_table(read_html(url_30))[[2]]),10)%>%
+  reactable(highlight = TRUE, pagination = TRUE, height = 850)
+
+x <- html_table(read_html(url_30))[[2]]
 ```
 
 
@@ -334,31 +334,9 @@ head(df_tb10_trend,5)%>%
     kable_classic("striped", full_width = F)
 ```
 
-## Evaluation
+### Exploratory Data Analysis
 
-```{r class.source = "fold-hide"}
-df_ml_rt <-
-  df_tb9_rt%>%
-    filter(Gender == "Male")%>%
-      select(- Count,- MoM)
 
-df_fml_rt <-
-  df_tb9_rt%>%
-    filter(Gender == "Female")%>%
-      select(- Count,- MoM)
-list_max<-pmax(df_ml_rt$MoM_Rate,df_fml_rt$MoM_Rate)
-```
-
-For a quick snapshot analysis,we compare the highest unemployment rate between male to female by month.
-The results suggests that men's unemployment rate was frequently higher from April 2020 to March 2021.
-
-```{r class.source = "fold-hide"}
-(df_max<-
-   df_tb9_rt%>%
-    filter(MoM_Rate == list_max)%>%
-      select(- Count,- MoM))%>%kbl(row.names = FALSE) %>%
-  kable_styling(bootstrap_options = "striped",position = "center", full_width = T)
-```
 
 ```{r class.source = "fold-hide"}
 #testing linear model. issue: gender is categorical var- need to look into this
@@ -366,7 +344,30 @@ The results suggests that men's unemployment rate was frequently higher from Apr
 summary(lm(Count~Gender, df_tb9_rt))
 ```
 
-## Visualizations
+```{r class.source = "fold-hide"}
+plot(lm(Count~Gender, df_tb9_rt))
+```
+
+
+## Analysis{.tabset .tabset-pills}
+
+we can have narrative here
+
+### Initial 
+
+or here
+
+**df_tb10_trend**
+```{r class.source = "fold-hide"}
+ggplot(df_tb10_trend, aes(x=factor(Month_Year), y = (Rate), color = Gender, group = Gender, fill=Gender)) +
+  geom_col(position="dodge") +
+  theme_minimal()+
+  theme(axis.text.x = element_text(angle = 45, hjust=1))+
+  labs(title = 'Unemployment Rates by Gender'
+       ,subtitle = "03/2020-03/2021",
+       x = "Month", y = "Rate")
+```
+
 
 **df_tb10_ln**
 ```{r class.source = "fold-hide"}
@@ -380,6 +381,8 @@ summary(lm(Count~Gender, df_tb9_rt))
        x = "Month", y = "Rate")+
   facet_wrap( ~ Label, scales = "free_y"))
 ```
+
+### Month-over-month
 
 **df_tb9_rt**
 
@@ -401,42 +404,11 @@ ggplot(df_tb9_rt, aes(x=factor(Month_Year), y=MoM, fill=Gender)) +
 (ggplot(df_tb9_MoM, aes(x=factor(Month_Year), y = (MoM), color = Gender, group = Gender, fill=Gender)) +
   geom_col(position="dodge") +
   theme_minimal()+
-  theme(axis.text.x = element_text(angle=45, hjust=1))+
+  theme(axis.text.x = element_text(angle=90, hjust=1))+
   labs(title= 'Month over Month Employment Rate Change by Age Group and Gender',
        subtitle="03/2020-03/2021",
        x="Month", y="Rate Change")+
   facet_wrap( ~ Label, scales = "free_y"))
-```
-
-**df_tb10_trend**
-
-```{r class.source = "fold-hide"}
-#line graph
-ggplot(df_tb10_trend, aes(x=factor(Month_Year), y = (Rate), color = Gender, group = Gender)) +
-  geom_line() +
-  geom_point(size = 4, shape = 21) + # Also use a point with a color fill
-  scale_y_continuous(limits = c(4, 16.5))+
-  theme_minimal()+
-  theme(axis.text.x = element_text(angle = 45, hjust=1))+
-  labs(title = 'Unemployment Rates by Gender'
-       ,subtitle = "03/2020-03/2021",
-       x = "Month", y = "Rate")
-
-
-```
-
-**df_tb10_trend**
-
-```{r class.source = "fold-hide"}
-#bar plot
-(ggplot() + 
-  geom_bar(aes(y = Rate, x = factor(Month_Year), 
-    fill = Gender), data = df_tb10_trend,
-    stat="identity")+theme_minimal()+  
-  theme(axis.text.x = element_text(angle = 45, hjust=1))+
-  labs(title = 'Unemployment Rates by Gender'
-       ,subtitle = "03/2020-03/2021",
-       x = "Month", y = "Rate"))
 ```
 
 
