@@ -133,25 +133,23 @@ url_10 <- "https://www.bls.gov/web/empsit/cpseea10.htm"
 #url_34_xsls <- "https://www.bls.gov/cps/cpsaat34.xlsx"
 ```
 
-
+<font size="5" color = "navy blue">Table 9 Data</font>
 ```{r class.source = "fold-hide"}
 head(df_tb9  <- as.data.frame(html_table(read_html(url_9))[[2]]),5)%>%
   reactable(highlight = TRUE, pagination = FALSE, height = 450)
 ```
-<font size="11" color = "navy blue">Table 9 Data</font>
 
 
 <br>
 ________________________________________________________________________________
 <br>
 
+<font size="5" color = "navy blue">Table 10 Data</font>
 
 ```{r class.source = "fold-hide"}
 head(df_tb10 <- as.data.frame(html_table(read_html(url_10))[[2]]),5)%>%
   reactable(highlight = TRUE, pagination = FALSE, height = 450)
 ```
-<font size="11" color = "navy blue">Table 10 Data</font>
-
 
 ```{r, include=FALSE}
 #head(df_tb34 <- as.data.frame(html_table(read_html(url_34))[[2]]),5)
@@ -366,6 +364,11 @@ The results suggests that men's unemployment rate was frequently higher from Apr
 summary(lm(Count~Gender, df_tb9_rt))
 ```
 
+```{r}
+plot(lm(Count~Gender, df_tb9_rt))
+```
+
+
 ## Visualizations
 
 **df_tb10_ln**
@@ -401,7 +404,7 @@ ggplot(df_tb9_rt, aes(x=factor(Month_Year), y=MoM, fill=Gender)) +
 (ggplot(df_tb9_MoM, aes(x=factor(Month_Year), y = (MoM), color = Gender, group = Gender, fill=Gender)) +
   geom_col(position="dodge") +
   theme_minimal()+
-  theme(axis.text.x = element_text(angle=45, hjust=1))+
+  theme(axis.text.x = element_text(angle=90, hjust=1))+
   labs(title= 'Month over Month Employment Rate Change by Age Group and Gender',
        subtitle="03/2020-03/2021",
        x="Month", y="Rate Change")+
