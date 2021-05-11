@@ -425,17 +425,18 @@ ggplot(df_tb10_trend, aes(x=factor(Month_Year), y = (Rate), color = Gender, grou
 
 ```
 
+**df_tb10_trend**
+
 ```{r class.source = "fold-hide"}
 #bar plot
-p4 <- ggplot() + 
+(ggplot() + 
   geom_bar(aes(y = Rate, x = factor(Month_Year), 
     fill = Gender), data = df_tb10_trend,
     stat="identity")+theme_minimal()+  
   theme(axis.text.x = element_text(angle = 45, hjust=1))+
   labs(title = 'Unemployment Rates by Gender'
        ,subtitle = "03/2020-03/2021",
-       x = "Month", y = "Rate")
-p4
+       x = "Month", y = "Rate"))
 ```
 
 
