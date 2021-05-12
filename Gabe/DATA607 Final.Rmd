@@ -153,10 +153,9 @@ head(df_tb10 <- as.data.frame(html_table(read_html(url_10))[[2]]),5)%>%
 ```{r class.source = "fold-hide"}
 head(df_tb30 <- as.data.frame(html_table(read_html(url_30))[[2]]),10)%>%
   reactable(highlight = TRUE, pagination = TRUE, height = 850)
-
-x <- html_table(read_html(url_30))[[2]]
 ```
 
+<!---- https://bookdown.org/yihui/rmarkdown-cookbook/html-tabs.html ------>
 
 ### Transform Data
 
