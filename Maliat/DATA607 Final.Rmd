@@ -198,6 +198,8 @@ view(df_tb30_n1)
 
 ```{r}
 
+library(tidyquant)
+
 library(pivottabler)
 ```
 
