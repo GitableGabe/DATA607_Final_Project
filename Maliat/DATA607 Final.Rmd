@@ -174,10 +174,10 @@ view(df_tb30_n)
 
 ```{r}
 names(df_tb30_n)[1] <- "Occupation_Label"
-names(df_tb30_n)[2] <- "Total_Unemployed_April_2020"
-names(df_tb30_n)[3] <- "Total_Unemployed_April_2021"
-names(df_tb30_n)[4] <- "Total_Unemployed_Rates_April_2020"
-names(df_tb30_n)[5] <- "Total_Unemployed_Rates_April_2021"
+names(df_tb30_n)[2] <- "TotalUnemployedApril2020"
+names(df_tb30_n)[3] <- "TotalUnemployedApril2021"
+names(df_tb30_n)[4] <- "TotalUnemployedRatesApril2020"
+names(df_tb30_n)[5] <- "TotalUnemployedRatesApril2021"
 names(df_tb30_n)[6] <- "Men_Unemployment_Rate_2020"
 names(df_tb30_n)[7] <- "Men_Unemployment_Rate_2021"
 names(df_tb30_n)[8] <- "Women_Unemployment_Rate_2020"
@@ -187,12 +187,12 @@ names(df_tb30_n)[9] <- "Women_Unemployment_Rate_2021"
 
 ```{r}
 view(df_tb30_n)
-#df_tb30_n = df_tb30_n[-c(2),]
+df_tb30_n = df_tb30_n[-c(2),]
 
 ```
 ###Dropping unnecessary column:
 ```{r}
-df_tb30_n1 = subset(df_tb30_n, select =-c(Total_Unemployed_April_2020,Total_Unemployed_April_2021) )
+df_tb30_n1 = subset(df_tb30_n, select =-c(TotalUnemployedApril2020,TotalUnemployedApril2021) )
 view(df_tb30_n1)
 ```
 
@@ -201,6 +201,18 @@ view(df_tb30_n1)
 library(tidyquant)
 
 library(pivottabler)
+df_tb30_n1%>%
+  pivot_table(
+        .rows       = c(~TotalUnemployedRatesApril2020, ~TotalUnemployedRatesApril2021),
+        .columns    = ~Occupation_Label,
+        .values     = ~ COUNT()
+    )
+
+
+```
+
+```{r}
+describe(df_tb30_n1)
 ```
 
 ### Transform Data
