@@ -32,10 +32,12 @@ library(httr)
 library(janitor)
 library(kableExtra)
 library(lubridate)
+library(pivottabler)
 library(readxl)
 library(rio)
 library(reactable)
 library(rvest)
+library(tidyquant)
 library(tidyverse)
 library(zoo)
 ```
@@ -165,7 +167,6 @@ view(df_tb30)
 ```
 
 ```{r}
-
 df_tb30_n<-df_tb30[3:33,]
 view(df_tb30_n)
 
@@ -198,10 +199,6 @@ view(df_tb30_n1)
 ```
 
 ```{r}
-
-library(tidyquant)
-
-library(pivottabler)
 df_tb30_n1%>%
   pivot_table(
         .rows       = c(~TotalUnemployedRatesApril2020, ~TotalUnemployedRatesApril2021),
