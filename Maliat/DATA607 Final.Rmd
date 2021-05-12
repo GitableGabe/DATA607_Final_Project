@@ -178,10 +178,10 @@ names(df_tb30_n)[2] <- "TotalUnemployedApril2020"
 names(df_tb30_n)[3] <- "TotalUnemployedApril2021"
 names(df_tb30_n)[4] <- "TotalUnemployedRatesApril2020"
 names(df_tb30_n)[5] <- "TotalUnemployedRatesApril2021"
-names(df_tb30_n)[6] <- "Men_Unemployment_Rate_2020"
-names(df_tb30_n)[7] <- "Men_Unemployment_Rate_2021"
-names(df_tb30_n)[8] <- "Women_Unemployment_Rate_2020"
-names(df_tb30_n)[9] <- "Women_Unemployment_Rate_2021"
+names(df_tb30_n)[6] <- "MenUnemploymentRate2020"
+names(df_tb30_n)[7] <- "MenUnemploymentRate2021"
+names(df_tb30_n)[8] <- "WomenUnemploymentRate2020"
+names(df_tb30_n)[9] <- "WomenUnemploymentRate2021"
 
 ```
 
@@ -197,13 +197,20 @@ view(df_tb30_n1)
 ```
 
 ```{r}
+df_tb30_n1$TotalUnemployedRatesApril2020<-as.numeric(df_tb30_n1$TotalUnemployedRatesApril2020)
+df_tb30_n1$TotalUnemployedRatesApril2021<-as.numeric(df_tb30_n1$TotalUnemployedRatesApril2021)
+str(df_tb30_n)
+```
+
+
+```{r}
 
 library(tidyquant)
 
 library(pivottabler)
 df_tb30_n1%>%
   pivot_table(
-        .rows       = c(~TotalUnemployedRatesApril2020, ~TotalUnemployedRatesApril2021),
+        .rows       = c(~TotalUnemployedRatesApril2020,~TotalUnemployedRatesApril2021),
         .columns    = ~Occupation_Label,
         .values     = ~ COUNT()
     )
@@ -212,7 +219,7 @@ df_tb30_n1%>%
 ```
 
 ```{r}
-describe(df_tb30_n1)
+
 ```
 
 ### Transform Data
