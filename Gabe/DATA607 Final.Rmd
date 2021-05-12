@@ -333,6 +333,27 @@ head(df_tb10_trend,5)%>%
     kable_classic("striped", full_width = F)
 ```
 
+```{r}
+df_tb30<-
+  bind_rows(df_tb30[3,],df_tb30[5:33,])%>%
+    select(-2,-3)
+
+colnames(df_tb30)<-
+  c("Occupation_Label", "TotalUnemployedRatesApril2020",
+    "TotalUnemployedRatesApril2021", "Men_Unemployment_Rate_2020",
+    "Men_Unemployment_Rate_2021", "Women_Unemployment_Rate_2020", "Women_Unemployment_Rate_2021")
+```
+
+```{r}
+(df_tb30_t <-
+  df_tb30%>%
+    rownames_to_column() %>%
+      pivot_longer(-rowname, 'variable', 'value') %>%
+        pivot_wider(variable, rowname)%>%
+          janitor::row_to_names(1))
+
+```
+
 ### Exploratory Data Analysis
 
 
