@@ -1,6 +1,6 @@
 ---
 title: "DATA607 Final"
-author: "Gabriella Martinez, Maliat Hossain, Gabriel Campos"
+author: "Gabriella Martinez, Maliat Islam, Gabriel Campos"
 date: "`r format(Sys.Date(), '%B %d %Y')`"
 output:
   html_document:
@@ -151,12 +151,55 @@ head(df_tb10 <- as.data.frame(html_table(read_html(url_10))[[2]]),5)%>%
 <font size="5" color = "navy blue">Table 30 Data</font>
 
 ```{r class.source = "fold-hide"}
+df_tb30 <- as.data.frame(html_table(read_html(url_30))[[2]])
 head(df_tb30 <- as.data.frame(html_table(read_html(url_30))[[2]]),10)%>%
   reactable(highlight = TRUE, pagination = TRUE, height = 850)
 
-x <- html_table(read_html(url_30))[[2]]
+
+```
+#### Table30
+
+```{r}
+view(df_tb30)
 ```
 
+```{r}
+library(janitor)
+df_tb30_n<-df_tb30[3:33,]
+view(df_tb30_n)
+
+```
+
+
+
+```{r}
+names(df_tb30_n)[1] <- "Occupation_Label"
+names(df_tb30_n)[2] <- "Total_Unemployed_April_2020"
+names(df_tb30_n)[3] <- "Total_Unemployed_April_2021"
+names(df_tb30_n)[4] <- "Total_Unemployed_Rates_April_2020"
+names(df_tb30_n)[5] <- "Total_Unemployed_Rates_April_2021"
+names(df_tb30_n)[6] <- "Men_Unemployment_Rate_2020"
+names(df_tb30_n)[7] <- "Men_Unemployment_Rate_2021"
+names(df_tb30_n)[8] <- "Women_Unemployment_Rate_2020"
+names(df_tb30_n)[9] <- "Women_Unemployment_Rate_2021"
+
+```
+
+```{r}
+view(df_tb30_n)
+#df_tb30_n = df_tb30_n[-c(2),]
+
+```
+###Dropping unnecessary column:
+```{r}
+df_tb30_n1 = subset(df_tb30_n, select =-c(Total_Unemployed_April_2020,Total_Unemployed_April_2021) )
+view(df_tb30_n1)
+```
+
+```{r}
+
+library(pivottabler)
+```
 
 ### Transform Data
 
