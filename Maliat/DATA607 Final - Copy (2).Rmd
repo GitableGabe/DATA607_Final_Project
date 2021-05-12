@@ -29,6 +29,7 @@ editor_options:
 # install.packages("rio")
 # ^^^^ only if needed 
 library(httr)
+library(janitor)
 library(kableExtra)
 library(lubridate)
 library(readxl)
@@ -164,7 +165,7 @@ view(df_tb30)
 ```
 
 ```{r}
-library(janitor)
+
 df_tb30_n<-df_tb30[3:33,]
 view(df_tb30_n)
 
