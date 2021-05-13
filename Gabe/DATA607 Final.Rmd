@@ -365,7 +365,7 @@ df_test$Gender<-
 
 
 ```{r, include=FALSE}
-sapply(test,typeof)
+sapply(df_test,typeof)
 ```
 
 **test**
