@@ -183,7 +183,27 @@ df_tb30_t <-
 ```
 
 
+###Dropping unnecessary column:
 
+```{r}
+df_tb30_n1%>%
+  pivot_table(
+        .rows       = c(~ TotalUnemployedRatesApril2020, ~ mean(TotalUnemployedRatesApril2021)),
+        .columns    = ~ Occupation_Label,
+        .values     = ~ COUNT()
+    )
+
+
+```
+
+```{r}
+describe(df_tb30_n1)
+```
+
+```{r}
+test<-as.data.frame(t(df_tb30_n1 %>%
+  select(TotalUnemployedRatesApril2020, TotalUnemployedRatesApril2021)))
+```
 
 
 ### Transform Data
