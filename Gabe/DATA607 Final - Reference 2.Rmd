@@ -334,52 +334,38 @@ head(df_tb10_trend,5)%>%
 ```
 
 ```{r}
-df_tb30 <- 
-  as.data.frame(
-    bind_rows(df_tb30[3,]
-              ,df_tb30[5:33,])%>%
-      select(-2,-3)%>%
-                lapply(function(x){
-                   gsub(" occupations", "", x)}
-                        ))%>%
-  `colnames<-`(c("Occupation_Label",
-                 "Total_Unemployed_Rates_April_2020",
-    "Total_Unemployed_Rates_April_2021", "Men_Unemployment_Rate_2020",
-    "Men_Unemployment_Rate_2021", "Women_Unemployment_Rate_2020",
-    "Women_Unemployment_Rate_2021"))
+df_tb30<-
+  bind_rows(df_tb30[3,],df_tb30[5:33,])%>%
+    select(-2,-3)%>%rbind(c("Gender","","","Male","Male","Female","Female"))
+
+colnames(df_tb30)<-
+  c("Occupation_Label", "TotalUnemployedRatesApril2020",
+    "TotalUnemployedRatesApril2021", "Men_Unemployment_Rate_2020",
+    "Men_Unemployment_Rate_2021", "Women_Unemployment_Rate_2020", "Women_Unemployment_Rate_2021")
 ```
 
 ```{r}
-df_test<-as.data.frame(df_tb30 %>% 
+(df_tb30_t <-
+  df_tb30%>%
+    rownames_to_column() %>%
+      pivot_longer(-rowname, 'variable', 'value') %>%
+        pivot_wider(variable, rowname)%>%
+          janitor::row_to_names(1))
+
+```
+
+```{r}
+test<-as.data.frame(df_tb30 %>% 
   select(-2,-3)%>%
     slice(c(2:30)) %>%
       gather("test", "Rate", 2:5))%>%
         mutate(Rate = as.numeric(Rate))
 ```
 
-```{r}
-df_test$Gender<-
-  ifelse(grepl("Men", df_test$test), "Male",
-                             ifelse(grepl("Women", df_test$test), "Female", ""))
-```
-
-
 ```{r, include=FALSE}
 sapply(test,typeof)
 ```
 
-**test**
-```{r class.source = "fold-hide"}
-(ggplot(data = df_test, aes(Occupation_Label, Rate, color = Gender, group = Gender)) +
-  geom_line(size = 1) +
-  geom_point() + 
-  theme_minimal()+
-  theme(axis.text.x = element_text(angle = 90, hjust=1))+
-  labs(title = 'Unemployment Rates by Age Group and Gender'
-       ,subtitle = "03/2020-03/2021",
-       x = "Month", y = "Rate")+
-  facet_wrap( ~ test, scales = "free_y"))
-```
 
 ### Exploratory Data Analysis
 
@@ -428,6 +414,20 @@ ggplot(df_tb10_trend, aes(x=factor(Month_Year), y = (Rate), color = Gender, grou
        x = "Month", y = "Rate")+
   facet_wrap( ~ Label, scales = "free_y"))
 ```
+
+**test**
+```{r class.source = "fold-hide"}
+(ggplot(data = df_tb10_ln, aes(Occupation_Label, Rate, color = Gender, group = Gender)) +
+  geom_line(size = 1) +
+  geom_point() + 
+  theme_minimal()+
+  theme(axis.text.x = element_text(angle = 45, hjust=1))+
+  labs(title = 'Unemployment Rates by Age Group and Gender'
+       ,subtitle = "03/2020-03/2021",
+       x = "Month", y = "Rate")+
+  facet_wrap( ~ Label, scales = "free_y"))
+```
+
 
 ### Month-over-month
 
