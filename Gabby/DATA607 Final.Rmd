@@ -241,7 +241,7 @@ The data is stored to `df_tb10_ln`. When sorted, it is easy to see that the high
 ```{r, echo= FALSE}
 head(df_tb10_ln[with(df_tb10_ln, order(-Rate)),])%>%
   kbl(row.names = FALSE) %>%
-  kable_styling(bootstrap_options = "striped",position = "center", full_width = T)
+  kable_classic("striped", full_width = F)
 ```
 
 From here we calculate rates and store the values to `df_tb9_rt`. The data is transformed in a month over month format, so that it can be assessed as a trend throughout the year. The functions used to create this data frame included:
@@ -285,7 +285,7 @@ The result is a data frame with rates for ages $16\ and\ over$ (or all age group
 ```{r, echo= FALSE,class.source = "fold-hide", results='show'}
 head(df_tb9_rt[with(df_tb9_rt, order(- MoM_Rate)),])%>%
   kbl(row.names = FALSE) %>%
-  kable_paper(bootstrap_options = "striped", full_width = F)
+  kable_classic("striped", full_width = F)
 ```
 
 Following a similar approach, but grouping by `Gender` & `Label` we create data frame `df_tb9_MoM` and can see the impact for each age bracket.
@@ -310,7 +310,7 @@ df_tb9_MoM <- df_tb9_MoM %>%
 ```{r class.source = "fold-hide", echo= FALSE, results='show'}
 arrange(df_tb9_MoM,Label)[15:25,]%>%
   kbl(row.names = FALSE) %>%
-    kable_paper(bootstrap_options = "striped", full_width = F)
+    kable_classic("striped", full_width = F)
 ```
 
 Finally for our linear trend analysis `df_tb10_trend` is created for an additional perspective of unemployment by demographic by year.
@@ -333,7 +333,9 @@ head(df_tb10_trend,5)%>%
     kable_classic("striped", full_width = F)
 ```
 
-```{r}
+The information from table 30 can be found hear
+
+```{r class.source = "fold-hide", message=FALSE}
 df_tb30 <- 
   as.data.frame(
     bind_rows(df_tb30[3,]
@@ -349,7 +351,7 @@ df_tb30 <-
     "Women_Unemployment_Rate_2021"))
 ```
 
-```{r}
+```{r class.source = "fold-hide"}
 df_test<-as.data.frame(df_tb30 %>% 
   select(-2,-3)%>%
     slice(c(2:30)) %>%
@@ -357,16 +359,21 @@ df_test<-as.data.frame(df_tb30 %>%
         mutate(Rate = as.numeric(Rate))
 ```
 
-```{r}
+```{r class.source = "fold-hide"}
 df_test$Gender<-
   ifelse(grepl("Men", df_test$test), "Male",
                              ifelse(grepl("Women", df_test$test), "Female", ""))
 ```
 
-
-```{r, include=FALSE}
-sapply(test,typeof)
+```{r, echo = FALSE}
+head(df_test,10)%>%
+  kbl(row.names = FALSE) %>%
+    kable_classic("striped", full_width = F)
 ```
+
+
+### Exploratory Data Analysis
+
 
 **test**
 ```{r class.source = "fold-hide"}
@@ -381,15 +388,22 @@ sapply(test,typeof)
   facet_wrap( ~ test, scales = "free_y"))
 ```
 
-### Exploratory Data Analysis
-
-
+```{r class.source = "fold-hide"}
+ggplot(df_test, aes(x=factor(Occupation_Label), y = (Rate), color = Gender, group = Gender, fill=Gender)) +
+  geom_col(position="dodge") +
+  theme_minimal()+
+  theme(axis.text.x = element_text(angle = 90, hjust=1))+
+  labs(title = 'Unemployment Rates by Gender'
+       ,subtitle = "03/2020-03/2021",
+       x = "Month", y = "Rate")
+```
 
 ```{r class.source = "fold-hide"}
 #testing linear model. issue: gender is categorical var- need to look into this
 # only accounts for 1.18% of data, Multiple R-squared:  0.0118
 summary(lm(Count~Gender, df_tb9_rt))
 ```
+
 
 ```{r class.source = "fold-hide"}
 plot(lm(Count~Gender, df_tb9_rt))
