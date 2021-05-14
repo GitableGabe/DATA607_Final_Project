@@ -333,23 +333,34 @@ head(df_tb10_trend,5)%>%
     kable_classic("striped", full_width = F)
 ```
 
-The information from table 30 can be found hear
+The information from table 30 can be found here
 
 ```{r class.source = "fold-hide", message=FALSE}
 df_tb30 <- 
-  as.data.frame(
-    bind_rows(df_tb30[3,]
-              ,df_tb30[5:33,])%>%
-      select(-2,-3)%>%
-                lapply(function(x){
-                   gsub(" occupations", "", x)}
-                        ))%>%
+  as.data.frame(bind_rows(df_tb30[3,],df_tb30[5:33,])%>%
+  select(-2,-3)%>%
+  lapply(function(x){gsub(" occupations", "", x)}))%>%
   `colnames<-`(c("Occupation_Label",
                  "Total_Unemployed_Rates_April_2020",
     "Total_Unemployed_Rates_April_2021", "Men_Unemployment_Rate_2020",
     "Men_Unemployment_Rate_2021", "Women_Unemployment_Rate_2020",
     "Women_Unemployment_Rate_2021"))
 ```
+
+```{r}
+df_test2 <- df_tb30
+colnames(df_test2)<-(c("Occupation_Label","Total_Unemployed_Population_April_2020",
+    "Total_Unemployed_Population_April_2021",
+    "Total_Unemployed_Rates_April_2020",
+    "Total_Unemployed_Rates_April_2021", "Men_Unemployment_Rate_2020",
+    "Men_Unemployment_Rate_2021", "Women_Unemployment_Rate_2020",
+    "Women_Unemployment_Rate_2021"))
+df_test2 %>% 
+  
+
+```
+
+
 
 ```{r class.source = "fold-hide"}
 df_test<-as.data.frame(df_tb30 %>% 
@@ -370,6 +381,26 @@ head(df_test,10)%>%
   kbl(row.names = FALSE) %>%
     kable_classic("striped", full_width = F)
 ```
+
+Added `Year` column using case_when() and [endsWith()](https://www.marsja.se/r-add-column-to-dataframe-based-on-other-columns-conditions-dplyr/)
+```{r}
+df_test <- df_test %>%
+  mutate(Year = case_when(
+    endsWith(test, "2020") ~ "2020",
+    endsWith(test, "2021") ~ "2021"))
+```
+
+```{r fig.height=12, fig.width=12}
+(ggplot(data = df_test, aes(Year, Rate, color = Gender, group = Gender, fill = Gender)) +
+  geom_col(position="dodge") +
+  theme_minimal()+
+  theme(axis.text.x = element_text(angle = 45, hjust=1))+
+  labs(title = 'Unemployment Rates by Occupation and Gender'
+       ,subtitle = "2020-2021",
+       x = "Year", y = "Rate")+
+  facet_wrap( ~ Occupation_Label, scales = "free_y", ncol = 4))
+```
+
 
 
 ### Exploratory Data Analysis
