@@ -559,6 +559,16 @@ ggplot(df_tb9_rt, aes(x=factor(Month_Year), y=MoM, fill=Gender)) +
 
 ## Conclusion
 
+```{r}
+a_gabes_test<-bind_rows(
+              (cbind(Male = df_test2_2020$Male_Unemp_Pop_April2020,
+                    Year = df_test2_2020$Year)),
+              (cbind(Male = df_test2_2021$Male_Unemp_Pop_April2021,
+                    Year = df_test2_2021$Year))
+)
+```
+
+
 <details><summary>Click here</summary>
 
 <!------- Below is for removing excessive space in Rmarkdown | HTML formatting -------->
