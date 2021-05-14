@@ -348,6 +348,8 @@ df_tb30 <-
 ```
 
 ```{r}
+###IN PROGRESS###
+
 df_test2 <- df_tb30
 colnames(df_test2)<-(c("Occupation_Label","Total_Unemployed_Population_April_2020",
     "Total_Unemployed_Population_April_2021",
@@ -355,9 +357,18 @@ colnames(df_test2)<-(c("Occupation_Label","Total_Unemployed_Population_April_202
     "Total_Unemployed_Rates_April_2021", "Men_Unemployment_Rate_2020",
     "Men_Unemployment_Rate_2021", "Women_Unemployment_Rate_2020",
     "Women_Unemployment_Rate_2021"))
-df_test2 %>% 
+df_test2_rates <- df_test2[, c(1,6:9)] %>% 
+  slice(-c(1,2,4,34:40)) %>% 
+  gather("Gender_Rate_Year", "Rate", 2:5)%>%
+  mutate(Rate = as.numeric(Rate)) %>% 
+  mutate(Year = case_when(
+    endsWith(Gender_Rate_Year, "2020") ~ "2020",
+    endsWith(Gender_Rate_Year, "2021") ~ "2021")) %>% 
+  mutate(Gender = case_when(
+    startsWith(Gender_Rate_Year, "Men") ~ "Male",
+    startsWith(Gender_Rate_Year, "Women") ~ "Female"))
   
-
+###IN PROGRESS###
 ```
 
 
