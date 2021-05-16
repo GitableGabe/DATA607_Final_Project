@@ -1,6 +1,6 @@
 ---
 title: "DATA607 Final"
-author: "Gabriella Martinez, Maliat Hossain, Gabriel Campos"
+author: "Gabriella Martinez, Maliat Islam, Gabriel Campos"
 date: "`r format(Sys.Date(), '%B %d %Y')`"
 output:
   html_document:
