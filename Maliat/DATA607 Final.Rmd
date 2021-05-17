@@ -475,14 +475,60 @@ library(ggridges)
 library(ggplot2)
 library(viridis)
 library(hrbrthemes)
-ggplot(df_tb30_sub,aes(x=factor(Occupation_Label),y=)) +
-    geom_density_ridges(aes(x = Rate, y = Occupation_Label,
+ggplot(df_tb30_rc,aes(x=Rate_Change,y=Occupation_Label)) +
+    geom_density_ridges(aes(x = Rate_Change, y = Occupation_Label,
                             group = interaction(Gender, Occupation_Label),
                             fill = Gender)) +
-    ylab(NULL) +
-    thm
+    ylab(NULL) 
                             
 ```
+
+```{r}
+ggplot(df_tb30_sub) +
+    geom_density_ridges(aes(x = Rate, y = Occupation_Label ,
+                            group = interaction(Gender,Occupation_Label),
+                            fill = Gender,alpha=0.8)) +
+    ylab(NULL) 
+
+```
+
+```{r}
+df_tb30_rc %>%
+  ggplot( aes(x=Rate_Change, y=Occupation_Label, group=Gender, color=Gender)) +
+    geom_line()
+```
+
+```{r}
+df_tb30_rc %>%
+  ggplot( aes(x=Occupation_Label, y=Rate_Change, group=Gender, fill=Gender)) +
+    geom_area() +
+    scale_fill_viridis(discrete = TRUE) +
+    theme(legend.position="none") +
+    ggtitle("Rate Change in Industries by Gender") +
+    theme_ipsum() +
+    theme(
+      legend.position="none",
+      panel.spacing = unit(0.1, "lines"),
+      strip.text.x = element_text(size = 8),
+      plot.title = element_text(size=14)
+    ) +
+    facet_wrap(~Gender)
+```
+
+```{r}
+ggplot(df_tb30_rc, aes(x=factor(Occupation_Label), y = (Rate_Change), color = Gender,
+                        group = Gender, fill=Gender)) +
+  geom_col(position="dodge") +
+  theme_minimal()+
+  theme(axis.text.x = element_text(hjust=1))+
+  labs(title= 'Rate Change Per Industry',
+       subtitle="04/2020-04/2021",
+       x="Industry", y="Rate Change")+
+       ylim(-100,120)+
+       coord_polar(start=0)
+```
+
+
 
 ```{r class.source = "fold-hide"}
 ggplot(df_tb30_full, aes(x=fct_reorder(factor(Occupation_Label),Rate), y = (Rate),color = Gender,
