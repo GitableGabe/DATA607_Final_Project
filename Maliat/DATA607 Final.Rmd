@@ -450,6 +450,40 @@ df_tb30_rc%>%
 
 The data from `Unemployment by Occupation and Gender`seems to support that women were more significantly impacted by unemployment in 2020, than men in virtually all industries.
 
+```{r}
+###Adding graphs
+
+library(ggpubr)
+df_tb30_full %>%
+  arrange(Rate) %>%    # First sort by val. This sort the dataframe but NOT the factor levels
+  mutate(Occupation_Label=factor(Occupation_Label, levels=Occupation_Label)) %>%   # This trick update the factor levels
+  ggplot( aes(x=Occupation_Label, y=Rate)) +
+    geom_segment( aes(xend=ccupation_Label, yend=0)) +
+    geom_point( size=4, color=Gender) +
+    coord_flip() +
+    theme_bw() +
+    xlab("")
+ 
+
+
+
+```
+
+```{r}
+###adding graphs
+library(ggridges)
+library(ggplot2)
+library(viridis)
+library(hrbrthemes)
+ggplot(df_tb30_sub,aes(x=factor(Occupation_Label),y=)) +
+    geom_density_ridges(aes(x = Rate, y = Occupation_Label,
+                            group = interaction(Gender, Occupation_Label),
+                            fill = Gender)) +
+    ylab(NULL) +
+    thm
+                            
+```
+
 ```{r class.source = "fold-hide"}
 ggplot(df_tb30_full, aes(x=fct_reorder(factor(Occupation_Label),Rate), y = (Rate),color = Gender,
                          group = Gender, fill=Gender)) +
