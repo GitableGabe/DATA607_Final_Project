@@ -645,6 +645,7 @@ When the data is stratified by industry, we see the trend holds true regardless 
 ```
 
 
+
 ```{r class.source = "fold-hide", warning=FALSE}
 ##bar plot month over month age group and gender
 ggplot(df_tb30_rc, aes(x=factor(Occupation_Label), y = (Rate_Change), color = Gender,
@@ -656,6 +657,61 @@ ggplot(df_tb30_rc, aes(x=factor(Occupation_Label), y = (Rate_Change), color = Ge
        subtitle="04/2020-04/2021",
        x="Industry", y="Rate Change")+coord_flip()
 ```
+
+#### Marital Status and Unemployment Rate
+
+```{r}
+df_tb10marital<-df_tb10[42:45,]
+df_tb10maritalc<-df_tb10marital[-c(1, 4), ]
+names(df_tb10maritalc)[1] <- "Marrital Label"
+
+
+
+```
+
+```{r}
+df_tb10maritalc[1, 1] = "Married Men Spouse Present"
+df_tb10maritalc[2, 1] = "Married Women Spouse Present"
+```
+### Transposing dataset and adding new column
+```{r}
+Gender1<-c("Male","Female")
+df_tb10maritalc$Gender<-Gender1
+
+
+
+
+```
+
+```{r}
+
+df_tb10maritalnew <- as.data.frame(df_tb10maritalc %>% 
+    gather("Month_Year", "Rate", 2:14)%>%
+      lapply(function(x){ 
+        gsub(",", "", x)}))
+
+```
+
+```{r}
+NewGraph<-ggplot(df_tb10maritalnew, aes(x=factor(Month_Year), y = (Rate),color = Gender,
+                          group = Gender, fill=Gender)) +
+
+  geom_col(position="dodge") +
+  theme_minimal()+
+  theme(axis.text.x = element_text(angle = 45, hjust=1))+
+  labs(title = 'Unemployment Rates by Gender and Marital Status'
+       ,subtitle = "03/2020-03/2021",
+       x = "Month-Year", y = "Rate")
+```
+
+
+```{r}
+print(NewGraph)
+```
+
+
+
+
 
 ## Conclusion
 
