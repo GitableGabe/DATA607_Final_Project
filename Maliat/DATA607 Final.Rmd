@@ -677,22 +677,20 @@ df_tb10marital<-rbind(df_tb10maritalm,df_tb10maritalu)
 
 ```
 
-```{r}
-# NewGraph<-ggplot(df_tb10maritalnew, aes(x=factor(Month_Year), y = (Rate),color = Gender,
-#                           group = Gender, fill=Gender)) +
-# 
-#   geom_col(position="dodge") +
-#   theme_minimal()+
-#   theme(axis.text.x = element_text(angle = 45, hjust=1))+
-#   labs(title = 'Unemployment Rates by Gender and Marital Status'
-#        ,subtitle = "03/2020-03/2021",
-#        x = "Month-Year", y = "Rate")
+```{r class.source = "fold-hide"}
+  ggplot(df_tb10marital, aes(x=factor(Month_Year), y = (Rate),color = `Marrital Label`,
+     group = `Marrital Label`, fill=`Marrital Label`)) +
+     geom_col(position="dodge") +
+     theme_minimal()+
+     theme(axis.text.x = element_text(angle=90, hjust=1))+
+     labs(title = 'Unemployment Rates by Gender and Marital Status'
+          ,subtitle = "03/2020-03/2021",
+          x = "Month-Year", y = "Rate")+
+  coord_flip()
 ```
 
 
-```{r}
-# print(NewGraph)
-```
+
 
 
 
