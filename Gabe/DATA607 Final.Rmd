@@ -315,7 +315,7 @@ arrange(df_tb9_MoM,Label)[15:25,]%>%
     kable_classic("striped", full_width = F)
 ```
 
-Finally for our linear trend analysis `df_tb10_trend` is created for an additional perspective of unemployment by demographic by year.
+For our linear trend analysis `df_tb10_trend` is created for an additional perspective of unemployment by demographic by year.
 
 ```{r class.source = "fold-hide"}
 #Dependency on df_tb10_tdy:     Rate and Gender
@@ -446,6 +446,30 @@ df_tb30_rc%>%
 ```
 
 
+Finally for our analysis of married women vs. married men rates we utilize the rows 43 and 44 from `df_tb10` and transform in a similar fashion as the above data.
+
+```{r class.source = "fold-hide"}
+df_tb10marital<-df_tb10[43:44,]
+names(df_tb10marital)[1] <- "Marital Label"
+df_tb10marital$`Marital Label`<- c("Married Men Spouse Present","Married Women Spouse Present")
+df_tb10marital$Gender<-c("Male","Female")
+
+df_tb10marital <- 
+  as.data.frame(df_tb10marital %>% 
+    gather("Month_Year", "Rate", 2:14))%>%
+      mutate(Rate = as.numeric(Rate))%>%
+        mutate(Month_Year = as.yearmon(Month_Year))
+```
+
+**df_tb10marital**
+
+```{r, echo=FALSE}
+head(df_tb10marital,5) %>% 
+  kbl(row.names = FALSE) %>%
+    kable_classic("striped", full_width = F)
+```
+
+
 ### Exploratory Data Analysis
 
 The data from `Unemployment by Occupation and Gender`seems to support that women were more significantly impacted by unemployment in 2020, than men in virtually all industries.
@@ -480,6 +504,25 @@ plot(lm(Count~Gender, df_tb9_rt))
 ## Analysis{.tabset .tabset-pills}
 
 Based on the the data seen in the below, women experienced a substantial loss in employment from the months of March to August 2020. This coincides with the [first day of stay at home order in the United States.](https://www.timeanddate.com/holidays/us/lockdown-day-1)
+
+### Transposing dataset and adding new column
+
+ **Marital Status and Unemployment Rate**
+
+At the beginning of the pandemic the unemployment rates were higher in the married women than married men. As time progresses the unemployment rate decreases for both the married men and women. However, married women are still experiencing higher unemployment rate than the married men.
+
+```{r class.source = "fold-hide", results='hold', fig.width=7, fig.height=5}
+ggplot(df_tb10marital, aes(x=factor(Month_Year), y = (Rate),color = `Marital Label`,
+   group = `Marital Label`, fill=`Marital Label`)) +
+   geom_col(position="dodge") +
+   theme_minimal()+
+   theme(axis.text.x = element_text(angle=90, hjust=1))+
+   labs(title = 'Unemployment Rates by Gender and Marital Status'
+        ,subtitle = "Married with Spouse",
+        x = "Month-Year", y = "Rate")+
+   coord_flip()
+```
+
 
 ### Gender & Age {.tabset .tabset-pills}
 
