@@ -120,9 +120,9 @@ With COVID-19 impacting employment worldwide, many articles have been published 
 
 In order to conduct our studies we used data from [U.S. Bureau of Labor Statistics | Labor Force Statistics from the Current Population Survey](https://www.bls.gov/cps/tables.htm#empstat) specifically data regarding:
 
-* [Table 9 : *Unemployed persons by occupation, sex, and age*](https://www.bls.gov/cps/cpsaat09.htm)
-* [Table 10: *Unemployed persons by occupation, race, Hispanic or Latino ethnicity, and sex*](https://www.bls.gov/cps/cpsaat10.htm)
-* [Table 30: *Unemployed persons by occupation and sex*](https://www.bls.gov/cps/cpsaat30.htm)
+* [Table 9 : *Unemployed persons by occupation, sex, and age*](https://www.bls.gov/web/empsit/cpseea09.htm)
+* [Table 10: *Unemployed persons by occupation, race, Hispanic or Latino ethnicity, and sex*](https://www.bls.gov/web/empsit/cpseea10.htm)
+* [Table 30: *Unemployed persons by occupation and sex*](https://www.bls.gov/web/empsit/cpseea30.htm)
 
 
 <!------- * [Table 34: *Unemployed jobseekers by sex, reason for unemployment, and active jobsearch methods used*](https://www.bls.gov/cps/cpsaat34.htm) --------->
@@ -554,8 +554,14 @@ At the beginning of the pandemic the unemployment rates were higher in the marri
 ```{r class.source = "fold-hide"}
 df_tb10marital<-df_tb10[43:44,]
 names(df_tb10marital)[1] <- "Marital Label"
-df_tb10marital$`Marital Label`<- c("Married Men Spouse Present","Married Women Spouse Present")
+df_tb10marital$`Marital Label`<- c("Male - Married with Spouse Present",
+                                   "Female - Married with Spouse Present")
 df_tb10marital$Gender<-c("Male","Female")
+```
+
+
+```{r class.source = "fold-hide"}
+
 
 df_tb10maritalm <- 
   as.data.frame(df_tb10marital %>% 
@@ -586,7 +592,8 @@ df_tb10maritalu<-df_tb10maritalu %>%
 
 
 ```{r class.source = "fold-hide", results='hold', fig.width=7, fig.height=5}
-ggplot(df_tb10maritalm, aes(x=factor(Month_Year), y = (Rate),color = `Marital Label`,
+ggplot(df_tb10maritalm, aes(x=factor(Month_Year), 
+                            y = (Rate),color = `Marital Label`,
    group = `Marital Label`, fill=`Marital Label`)) +
    geom_col(position="dodge") +
    theme_minimal()+
