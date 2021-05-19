@@ -54,8 +54,8 @@ $MSDA\ 607\ Final\ Project$
 *Deliverable*                             | *Date*                                             | *Points*
 :-------                                    | :--------------                    | :------
 One Paragraph Proposal                    | Sunday April 26                                    | 20  
-Final Project                             | Sunday May 10                                      | 120  
-Final Project Presentation                | Before or during Final Meetup on Wednesday May 13  | 30  
+Final Project                             | Wednesday May 19                                   | 120  
+Final Project Presentation                | Before or during Final Meetup on Wednesday May 19  | 30  
 
 <span style="color: cornflowerblue;font-size:25px;">Policy on Collaboration</span>
 
@@ -115,9 +115,9 @@ With COVID-19 impacting employment worldwide, many articles have been published 
 
 In order to conduct our studies we used data from [U.S. Bureau of Labor Statistics | Labor Force Statistics from the Current Population Survey](https://www.bls.gov/cps/tables.htm#empstat) specifically data regarding:
 
-* [Table 9 : *Unemployed persons by occupation, sex, and age*](https://www.bls.gov/cps/cpsaat09.htm)
-* [Table 10: *Unemployed persons by occupation, race, Hispanic or Latino ethnicity, and sex*](https://www.bls.gov/cps/cpsaat10.htm)
-* [Table 30: *Unemployed persons by occupation and sex*](https://www.bls.gov/cps/cpsaat30.htm)
+* [Table 9 : *Unemployed persons by age, sex, and marital status, seasonally adjusted*](https://www.bls.gov/web/empsit/cpseea09.htm)
+* [Table 10: *Unemployment rates by age, sex, and marital status, seasonally adjusted*](https://www.bls.gov/web/empsit/cpseea10.htm)
+* [Table 30: *Unemployed persons by occupation and sex*](https://www.bls.gov/web/empsit/cpseea30.htm)
 
 
 <!------- * [Table 34: *Unemployed jobseekers by sex, reason for unemployment, and active jobsearch methods used*](https://www.bls.gov/cps/cpsaat34.htm) --------->
@@ -451,7 +451,7 @@ Finally for our analysis of married women vs. married men rates we utilize the r
 ```{r class.source = "fold-hide"}
 df_tb10marital<-df_tb10[43:44,]
 names(df_tb10marital)[1] <- "Marital Label"
-df_tb10marital$`Marital Label`<- c("Married Men Spouse Present","Married Women Spouse Present")
+df_tb10marital$`Marital Label`<- c("Male with Spouse Present","Female with Spouse Present")
 df_tb10marital$Gender<-c("Male","Female")
 
 df_tb10marital <- 
@@ -505,20 +505,20 @@ plot(lm(Count~Gender, df_tb9_rt))
 
 Based on the the data seen in the below, women experienced a substantial loss in employment from the months of March to August 2020. This coincides with the [first day of stay at home order in the United States.](https://www.timeanddate.com/holidays/us/lockdown-day-1)
 
-### Transposing dataset and adding new column
+### Gender & Marital Status
 
  **Marital Status and Unemployment Rate**
 
 At the beginning of the pandemic the unemployment rates were higher in the married women than married men. As time progresses the unemployment rate decreases for both the married men and women. However, married women are still experiencing higher unemployment rate than the married men.
 
 ```{r class.source = "fold-hide", results='hold', fig.width=7, fig.height=5}
-ggplot(df_tb10marital, aes(x=factor(Month_Year), y = (Rate),color = `Marital Label`,
-   group = `Marital Label`, fill=`Marital Label`)) +
+ggplot(df_tb10marital, aes(x=factor(Month_Year), y = (Rate),color = `Gender`,
+   group = `Gender`, fill=`Gender`)) +
    geom_col(position="dodge") +
    theme_minimal()+
-   theme(axis.text.x = element_text(angle=90, hjust=1))+
+   theme(axis.text.x = element_text(hjust=1))+
    labs(title = 'Unemployment Rates by Gender and Marital Status'
-        ,subtitle = "Married with Spouse",
+        ,subtitle = "Married with Spouse Present",
         x = "Month-Year", y = "Rate")+
    coord_flip()
 ```
@@ -570,8 +570,8 @@ ggplot(df_tb9_rt, aes(x=factor(Month_Year), y=MoM, fill=Gender)) +
   scale_y_continuous(labels = scales::percent)+  
   theme_minimal()+
   theme(axis.text.x = element_text(angle = 45, hjust=1))+
-  labs(title = 'Month over Month Employment Rate Change by Gender'
-       ,subtitle = "03/2020-03/2021",
+  labs(title = 'Month over Month Unemployment Rate Change by Gender'
+       ,subtitle = "03/2020-03/2021, in thousands",
        x = "Month", y = "Rate Chnage")
 ```
 
@@ -584,7 +584,7 @@ ggplot(df_tb9_rt, aes(x=factor(Month_Year), y=MoM, fill=Gender)) +
   geom_col(position="dodge") +
   theme_minimal()+
   theme(axis.text.x = element_text(angle=90, hjust=1))+
-  labs(title= 'Month over Month Employment Rate Change by Age Group and Gender',
+  labs(title= 'Month over Month Unemployment Rate Change by Age Group and Gender',
        subtitle="03/2020-03/2021",
        x="Month", y="Rate Change")+
   facet_wrap( ~ Label, scales = "free_y"))
@@ -600,7 +600,7 @@ When the data is stratified by industry, we see the trend holds true regardless 
   geom_col(position="dodge") +
   theme_minimal()+
   theme(axis.text.x = element_text(angle = 45, hjust=1))+
-  labs(title = 'Plot 1: Unemployment Rates by Occupation and Gender'
+  labs(title = 'Unemployment Rates by Occupation and Gender'
        ,subtitle = "2020-2021",
        x = "Year", y = "Rate")+
   facet_wrap( ~ Occupation_Label, scales = "free_y",
