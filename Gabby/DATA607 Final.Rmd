@@ -115,9 +115,9 @@ With COVID-19 impacting employment worldwide, many articles have been published 
 
 In order to conduct our studies we used data from [U.S. Bureau of Labor Statistics | Labor Force Statistics from the Current Population Survey](https://www.bls.gov/cps/tables.htm#empstat) specifically data regarding:
 
-* [Table 9 : *Unemployed persons by occupation, sex, and age*](https://www.bls.gov/cps/cpsaat09.htm)
-* [Table 10: *Unemployed persons by occupation, race, Hispanic or Latino ethnicity, and sex*](https://www.bls.gov/cps/cpsaat10.htm)
-* [Table 30: *Unemployed persons by occupation and sex*](https://www.bls.gov/cps/cpsaat30.htm)
+* [Table 9 : *Unemployed persons by occupation, sex, and age*](https://www.bls.gov/web/empsit/cpseea09.htm)
+* [Table 10: *Unemployed persons by occupation, race, Hispanic or Latino ethnicity, and sex*](https://www.bls.gov/web/empsit/cpseea10.htm)
+* [Table 30: *Unemployed persons by occupation and sex*](https://www.bls.gov/web/empsit/cpseea30.htm)
 
 
 <!------- * [Table 34: *Unemployed jobseekers by sex, reason for unemployment, and active jobsearch methods used*](https://www.bls.gov/cps/cpsaat34.htm) --------->
@@ -505,15 +505,15 @@ plot(lm(Count~Gender, df_tb9_rt))
 
 Based on the the data seen in the below, women experienced a substantial loss in employment from the months of March to August 2020. This coincides with the [first day of stay at home order in the United States.](https://www.timeanddate.com/holidays/us/lockdown-day-1)
 
-### Transposing dataset and adding new column
+### Gender & Marital Status
 
  **Marital Status and Unemployment Rate**
 
 At the beginning of the pandemic the unemployment rates were higher in the married women than married men. As time progresses the unemployment rate decreases for both the married men and women. However, married women are still experiencing higher unemployment rate than the married men.
 
 ```{r class.source = "fold-hide", results='hold', fig.width=7, fig.height=5}
-ggplot(df_tb10marital, aes(x=factor(Month_Year), y = (Rate),color = `Marital Label`,
-   group = `Marital Label`, fill=`Marital Label`)) +
+ggplot(df_tb10marital, aes(x=factor(Month_Year), y = (Rate),color = `Gender`,
+   group = `Gender`, fill=`Gender`)) +
    geom_col(position="dodge") +
    theme_minimal()+
    theme(axis.text.x = element_text(angle=90, hjust=1))+
@@ -543,7 +543,7 @@ ggplot(df_tb10_trend, aes(x=factor(Month_Year), y = (Rate),color = Gender,
 ```
 
 
-Additionally, when broken down into age groups, we can see `18 to 19 years`, `16 to 17 years` and `35 to 44 years` of age where the highest for women and far exceeded the rates for men in the early months.
+Additionally, when broken down into age groups, we can see `16 to 17 years`, `18 to 19 years` and `35 to 44 years` of age were the highest for women and far exceeded the rates for men in the early months.
 
 **df_tb10_ln**
 ```{r class.source = "fold-hide"}
